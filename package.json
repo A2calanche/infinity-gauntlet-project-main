@@ -7,9 +7,13 @@
     "doc": "docs"
   },
   "scripts": {
+    "start": "concurrently \"yarn --cwd frontend start\" \"yarn --cwd backend start\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^10.0.3"
+  }
 }
