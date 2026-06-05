@@ -7,7 +7,7 @@ import TodoList from "./components/TodoList";
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showLogin, setShowLogin] = useState(true);
-  const [isDark, setIsDark] = useState(true);
+  const [isDark, setIsDark] = useState(window.matchMedia("(prefers-color-scheme: dark)").matches);
 
   useEffect(() => {
     document.documentElement.setAttribute(
