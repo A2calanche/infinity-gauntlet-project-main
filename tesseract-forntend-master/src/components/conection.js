@@ -1,7 +1,6 @@
-
 //GET
 export const llamarLista = async () =>{
-   try{ const respuesta = await fetch('http://localhost:3001/v1/to-dos');
+   try{ const respuesta = await fetch(`${process.env.REACT_APP_API_URL}/v1/to-dos`);
     console.log(respuesta.status);
     const data = await respuesta.json();
         return data;
@@ -14,7 +13,7 @@ export const llamarLista = async () =>{
   
 export const createTodo = async (todo) => {
     try {
-      const response = await fetch('http://localhost:3001/v1/to-do', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/v1/to-do`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
@@ -34,7 +33,7 @@ export const createTodo = async (todo) => {
   //PATCH(description)
   export const actualizar = async (id, updatedTodo) => {
     try {
-      const respuesta = await fetch(`http://localhost:3001/v1/to-do/${id}`, {
+      const respuesta = await fetch(`${process.env.REACT_APP_API_URL}/v1/to-do/${id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -57,7 +56,7 @@ export const createTodo = async (todo) => {
   //DELETE
   export const eliminar = async(id)=>{
     try{
-      const respuesta = await fetch(`http://localhost:3001/v1/to-do/${id}`,{
+      const respuesta = await fetch(`${process.env.REACT_APP_API_URL}/v1/to-do/${id}`,{
         method : 'DELETE',
         headers:{'Content-Type': 'application/json'}
       });
