@@ -1,13 +1,14 @@
 import express from "express";
 import { Todo } from "../models/Todo.js";
 import { validator } from "../middlewares/validator.js";
+import { authMiddleware } from "../middlewares/auth.js";
  
 export const TodosRouter = express.Router();
 
 /* C.R.U.D. */
 
 //CREATE
-TodosRouter.get("/to-dos", async function (request, response) {
+TodosRouter.get("/to-dos",authMiddleware, async function (request, response) {
     try {
       const todos = await Todo.find();  
       response.send({ todos });  
@@ -20,7 +21,7 @@ TodosRouter.get("/to-dos", async function (request, response) {
 });
 
 //READ
-TodosRouter.post("/to-do", validator, async function (request, response) {
+TodosRouter.post("/to-do", validator, authMiddleware, async function (request, response) {
       try {
 
         const { title, description, is_done, status } = request.body;
@@ -38,7 +39,7 @@ TodosRouter.post("/to-do", validator, async function (request, response) {
     })
 
 //UPDATE
-TodosRouter.patch("/to-do/:id", async function (request, response) {
+TodosRouter.patch("/to-do/:id", authMiddleware, async function (request, response) {
   try {
     const { id } = request.params;
 
@@ -71,7 +72,7 @@ TodosRouter.patch("/to-do/:id", async function (request, response) {
 });
 
 //DELETE
-TodosRouter.delete("/to-do/:id", async function (request, response) {
+TodosRouter.delete("/to-do/:id", authMiddleware, async function (request, response) {
   try {
     const { id } = request.params;
 

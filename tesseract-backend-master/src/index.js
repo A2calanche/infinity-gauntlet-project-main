@@ -9,7 +9,7 @@ import { AuthRouter } from "./routers/auth-routers.js";
 dotenv.config();
 
 const api = express();
-const apiPort = process.env.PORT || 3001;
+const apiPort = process.env.PORT || 8000;
 
 api.use(cors());
 api.use(express.json());

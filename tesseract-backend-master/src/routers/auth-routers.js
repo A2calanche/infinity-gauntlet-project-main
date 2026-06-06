@@ -29,18 +29,16 @@ AuthRouter.post("/register", async function (request, response) {
 
     response.status(201).send({
       message: "User created successfully",
-      token,
       user: {
         id: user._id,
-        name: user.name,
-        email: user.email,
+        name: user.name
       },
     });
   } catch (error) {
     console.error(error);
     response.status(500).send({
       message: "Something went wrong trying to register",
-      error,
+      error: error.message,
     });
   }
 });
@@ -72,11 +70,9 @@ AuthRouter.post("/login", async function (request, response) {
 
     response.send({
       message: "Login successful",
-      token,
       user: {
         id: user._id,
         name: user.name,
-        email: user.email,
       },
     });
   } catch (error) {
