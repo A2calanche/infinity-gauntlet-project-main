@@ -7,10 +7,10 @@ export const TodosRouter = express.Router();
 
 /* C.R.U.D. */
 
-//CREATE
-TodosRouter.get("/to-dos",authMiddleware, async function (request, response) {
-    try {
-      const todos = await Todo.find();  
+//GET
+TodosRouter.post("/to-do", authMiddleware, validator, async function (request, response) {
+  try {
+    const { title, description, is_done, status } = request.body;
       response.send({ todos });  
      } catch (error) {
     response.status(500).send({
@@ -43,7 +43,7 @@ TodosRouter.patch("/to-do/:id", authMiddleware, async function (request, respons
   try {
     const { id } = request.params;
 
-    const todo = await Todo.findById(id);
+    const todo = await Todo.findOne({ _id: id, userId: request.user.id });
 
     if (!todo) {
       return response.status(404).send({ message: "Todo not found" });
@@ -76,14 +76,13 @@ TodosRouter.delete("/to-do/:id", authMiddleware, async function (request, respon
   try {
     const { id } = request.params;
 
-    const todo = await Todo.findById(id);
+    const todo = await Todo.findOne({ _id: id, userId: request.user.id });
 
     if (!todo) {
       return response.status(404).send({ message: "Todo not found" });
     }
 
     await Todo.findByIdAndDelete(id);
-
     response.send({ message: "Todo deleted successfully" });
   } catch (error) {
     response.status(500).send({
