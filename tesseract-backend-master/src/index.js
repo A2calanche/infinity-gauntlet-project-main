@@ -1,19 +1,25 @@
 import cors from "cors";
 import express from "express";
-import { initDB } from "./db/index.js";
-import { TodosRouter } from "./routers/to-dos.routers.js";
 import morgan from "morgan";
-const api = express();
+import dotenv from "dotenv";
+import { connectDB } from "./db/index.js";
+import { TodosRouter } from "./routers/to-dos.routers.js";
+import { AuthRouter } from "./routers/auth-routers.js";
 
-const apiPort = process.env["APP_ENV"] || 3001;
+dotenv.config();
+
+const api = express();
+const apiPort = process.env.PORT || 3001;
 
 api.use(cors());
 api.use(express.json());
 api.use(express.urlencoded({ extended: false }));
 api.use(morgan("dev"));
 api.use("/v1", TodosRouter);
+api.use("/v1/auth", AuthRouter);
 
-api.listen(apiPort, () => {
-  console.log(`API RUNNNIG ON PORT ${apiPort}`);
-  initDB().then(() => console.log("DB INITIALIZED :)"));
+connectDB().then(() => {
+  api.listen(apiPort, () => {
+    console.log(`API RUNNING ON PORT ${apiPort} 🚀`);
+  });
 });

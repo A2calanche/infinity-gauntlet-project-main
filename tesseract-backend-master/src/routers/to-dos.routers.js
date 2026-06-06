@@ -1,130 +1,93 @@
 import express from "express";
-import {getDBConnection} from "../db/index.js";
-import { validator } from "../middlewares/validator.js"
-
+import { Todo } from "../models/Todo.js";
+import { validator } from "../middlewares/validator.js";
  
 export const TodosRouter = express.Router();
+
 /* C.R.U.D. */
 
 //CREATE
 TodosRouter.get("/to-dos", async function (request, response) {
     try {
-      const db = await getDBConnection();
-  
-      const todos = await db.all("SELECT * FROM todos");
-  
-      await db.close();
-  
-      response.send({ todos });
-    } catch (error) {
-      response.status(500).send({
-        message: "Something went wrong trying to get to dos",
-        error,
-      });
-    }
-  });
+      const todos = await Todo.find();  
+      response.send({ todos });  
+     } catch (error) {
+    response.status(500).send({
+      message: "Something went wrong trying to get todos",
+      error,
+    });
+  }
+});
 
 //READ
-TodosRouter.post(
-    "/to-do",
-    validator,
-    async function (request, response) {
+TodosRouter.post("/to-do", validator, async function (request, response) {
       try {
-       console.log(request.body)
-        const { title, description, is_done:is_done} = request.body;
-        const db = await getDBConnection();
-  
-        const queryInfo = await db.run(`
-          INSERT INTO todos (title, description, is_done)
-          VALUES (
-          
-            '${title}',
-            '${description}',
-            ${is_done ? 1 : 0}
-          )       `);
-  
-        await db.close();
-            console.log(queryInfo);
-        response.send({   id: queryInfo.lastID   });
-      } catch (error) {
+
+        const { title, description, is_done, status } = request.body;
+        const todo = new Todo({title, description,  is_done: is_done || false, status: status || "pending"});
+        const savedTodo = await todo.save();
+            response.status(201).send({ id: savedTodo._id });
+              }
+      catch (error) {
         console.error(error);
         response.status(500).send({
-          message: "Something went wrong trying to create a new to do",
+          message: "Something went wrong trying to create a todo",
           error,
         });
       }
-    }
-  );
+    })
 
 //UPDATE
 TodosRouter.patch("/to-do/:id", async function (request, response) {
-    try {
-      const { id } = request.params;
-      const db = await getDBConnection();
-  
-      const todoExists = await db.get(
-        `SELECT * FROM todos WHERE id = ?`,
-        id
-      );
-  
-      if (!todoExists) {
-        return response
-          .status(404)
-          .send({ message: "To Do Not Found" });
-      }
-  
-      const { title, description, is_done} = request.body;
-  
-      await db.run(
-        `UPDATE todos 
-         SET title = ?, description = ?, is_done = ?
-         WHERE id = ?
-      `,
-        title || todoExists.title,
-        description || todoExists.description,
-        is_done || todoExists.is_done,
-        id
-      );
-  
-      await db.close();
-  
-      response.send({ message: "To do updated" });
-    } catch (error) {
-      response.status(500).send({
-        message: "Something went wrong trying to update a todo",
-        error,
-      });
+  try {
+    const { id } = request.params;
+
+    const todo = await Todo.findById(id);
+
+    if (!todo) {
+      return response.status(404).send({ message: "Todo not found" });
     }
-  });
+
+    const { title, description, is_done, status } = request.body;
+
+    const updatedTodo = await Todo.findByIdAndUpdate(
+      id,
+      {
+        title: title || todo.title,
+        description: description || todo.description,
+        is_done: is_done !== undefined ? is_done : todo.is_done,
+        status: status || todo.status,
+      },
+      { new: true }
+    );
+
+    response.send({ message: "Todo updated", todo: updatedTodo });
+  } catch (error) {
+    response.status(500).send({
+      message: "Something went wrong trying to update the todo",
+      error,
+    });
+  }
+});
+
 //DELETE
 TodosRouter.delete("/to-do/:id", async function (request, response) {
   try {
     const { id } = request.params;
-    const db = await getDBConnection();
 
-    const todoExists = await db.get(
-      `SELECT * FROM todos WHERE id = ?`,
-      id
-    );
-  
-      if (!todoExists) {
-        return response
-          .status(404)
-          .send({ message: "To Do Not Found" });
-      }
-  
-      const deletionInfo = await db.run(
-        `DELETE FROM todos WHERE id = ?`,
-        id
-      );
-  
-      await db.close();
-  
-      response.send({ deletionInfo });
-    } catch (error) {
-      response.status(500).send({
-        message: "Something went wrong trying to delete a todo",
-        error,
-      });
+    const todo = await Todo.findById(id);
+
+    if (!todo) {
+      return response.status(404).send({ message: "Todo not found" });
     }
-  });
+
+    await Todo.findByIdAndDelete(id);
+
+    response.send({ message: "Todo deleted successfully" });
+  } catch (error) {
+    response.status(500).send({
+      message: "Something went wrong trying to delete the todo",
+      error,
+    });
+  }
+});
