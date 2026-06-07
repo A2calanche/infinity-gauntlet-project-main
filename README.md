@@ -124,7 +124,7 @@ yarn start
 cd frontend
 yarn start
 ```
-``bash
+```bash
 # Install concurrently first (only once)
 yarn add concurrently --dev
 
