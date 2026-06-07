@@ -85,9 +85,49 @@ cd frontend
 yarn install
 ```
 
-<p><b>Backend</p></b>
+<p><b>Backend</b></p>
 
 ```bash
 cd backend 
 yarn install
-``
+```
+<strong>3. Configure environment variables</strong>
+<p><b>Create a .env file in the backend/ folder:</b></p>
+
+```bash
+MONGO_URI=mongodb+srv://user:password@cluster0.xxxxx.mongodb.net/infinity-gauntlet
+PORT=3001
+JWT_SECRET=your-random-secret-here
+TELEGRAM_BOT_TOKEN=your-telegram-bot-token
+TELEGRAM_CHAT_ID=your-chat-id
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+```
+
+<p><b>Create a .env file in the frontend/ folder:</b></p>
+
+```bash
+REACT_APP_API_URL=http://localhost:3001
+```
+<strong>4. Run the project<strong>
+<p>
+can run separately or together from main folder
+
+</p>
+
+``` bash
+# Terminal 1 - Backend
+cd backend
+yarn start
+
+# Terminal 2 - Frontend
+cd frontend
+yarn start
+```
+``bash
+# Install concurrently first (only once)
+yarn add concurrently --dev
+
+# Then run
+yarn start
+```
