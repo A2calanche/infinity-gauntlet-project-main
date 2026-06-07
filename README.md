@@ -174,18 +174,18 @@ infinity-gauntlet/
 └── README.md
 ```
 
-<he>:memo: Changelog</>
+<h3>:memo: Changelog</h3>
 
 [ 2025, @A2calanche ] - Migrated database from SQLite to MongoDB Atlas - Added JWT authentication - Added user registration and login - Added per-user task isolation - Added dark/light theme toggle - Added responsive design - Added password strength validation 
 
 [ 2023, original version ] - Basic CRUD to-do list - SQLite database - Express REST API - React frontend 
 
-<he>:gear: Contributing</>
+<h3>:gear: Contributing</h3>
 
 
 Feel free to fork this project and submit a PR if you have any ideas or improvements!
 
-<he>:lock: License</>
+<h3>:lock: License</h3>
 
 
 MIT
