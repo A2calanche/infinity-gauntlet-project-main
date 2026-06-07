@@ -128,6 +128,47 @@ yarn start
 # Install concurrently first (only once)
 yarn add concurrently --dev
 
-# Then run
+# Then run on the root folder 
 yarn start
+```
+<strong> make sure your root folder package.json has: </strong>
+
+```bash
+{
+  "scripts": {
+    "start": "concurrently \"yarn --cwd frontend start\" \"yarn --cwd backend start\""
+  }
+}
+```
+<h3>:file_folder: Project structure</h3>
+```bash
+infinity-gauntlet/
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── LogIn.js
+│   │   │   ├── SignIn.js
+│   │   │   ├── TodoList.js
+│   │   │   ├── Todo.js
+│   │   │   ├── TodoForm.js
+│   │   │   └── connection.js
+│   │   ├── App.js
+│   │   └── App.css
+│   └── package.json
+├── backend/
+│   ├── src/
+│   │   ├── models/
+│   │   │   ├── User.js
+│   │   │   └── Todo.js
+│   │   ├── routers/
+│   │   │   ├── auth-routers.js
+│   │   │   └── to-dos.routers.js
+│   │   ├── middlewares/
+│   │   │   ├── auth.js
+│   │   │   └── validator.js
+│   │   ├── db/
+│   │   │   └── index.js
+│   │   └── index.js
+│   └── package.json
+└── README.md
 ```
