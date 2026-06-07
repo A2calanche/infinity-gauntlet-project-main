@@ -141,6 +141,7 @@ yarn start
 }
 ```
 <h3>:file_folder: Project structure</h3>
+
 ```bash
 infinity-gauntlet/
 ├── frontend/
