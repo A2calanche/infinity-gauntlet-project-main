@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+const [error, setError] = useState("");
+const [loading, setLoading] = useState(false);
 
 const validatePassword = (password) => {
   const errors = [];
@@ -31,11 +33,36 @@ const SignIn = ({ onShowLogin }) => {
   const passwordMatch = confirmPassword.length > 0 && password === confirmPassword;
   const passwordNoMatch = confirmPassword.length > 0 && password !== confirmPassword;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (passwordErrors.length > 0 || passwordNoMatch) return;
-    console.log({ name, email, password });
-  };
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (passwordErrors.length > 0 || passwordNoMatch) return;
+  setError("");
+  setLoading(true);
+
+  try {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/v1/auth/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, password }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      setError(data.message || "Registration failed");
+      return;
+    }
+
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("user", JSON.stringify(data.user));
+    onLogin();
+
+  } catch (error) {
+    setError("Connection error, try again later");
+  } finally {
+    setLoading(false);
+  }
+};
 
   const canSubmit = passwordValid && passwordMatch && name && email;
 

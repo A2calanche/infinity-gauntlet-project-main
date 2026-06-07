@@ -3,14 +3,37 @@ import React, { useState } from "react";
 const LogIn = ({ onLogin, onShowSignIn }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setError("");
+    setLoading(true);
 
-    console.log({
-      email,
-      password,
-    });
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/v1/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.message || "Login failed");
+        return;
+      }
+
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      onLogin();
+
+    } catch (error) {
+      setError("Connection error, try again later");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -33,11 +56,22 @@ const LogIn = ({ onLogin, onShowSignIn }) => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
+      {error && (
+          <p style={{ color: "var(--danger-a0)", fontSize: "13px", textAlign: "left" }}>
+            ⚠️ {error}
+          </p>
+        )}
 
-      <button className="auth-button" type="submit">
-        Entrar
-      </button>
-    </form>
+      <button
+          className="auth-button"
+          type="submit"
+          disabled={loading}
+          style={{ opacity: loading ? 0.7 : 1 }}
+        >
+          {loading ? "Entrando..." : "Entrar"}
+        </button>
+        
+      </form>
 
     <div className="auth-footer">
       <p>¿No tienes cuenta?</p>
