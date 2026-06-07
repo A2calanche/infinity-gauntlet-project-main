@@ -76,7 +76,7 @@ cd infinity-gauntlet
 ```
 
 
-<strong> 2. Install dependencies</strong>
+<strong> 2. Install dependencies</strong></b>
  <strong>Frontend</strong>
 
 
