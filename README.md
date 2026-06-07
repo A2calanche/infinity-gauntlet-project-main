@@ -72,7 +72,7 @@ Infinity Gauntlet is a productivity app that lets you manage your tasks with a K
 
 ```bash
 git clone https://github.com/A2calanche/infinity-gauntlet.git
-cd infinity-gauntlet```
+cd infinity-gauntlet
 
 
 <strong> 2. Install dependencies</strong>
@@ -81,10 +81,10 @@ cd infinity-gauntlet```
 
 ```bash
 cd frontend
-yarn install```
+yarn install
 
 <strong>Backend</strong> 
 
 ```bash
 cd backend 
-yarn install ```
+yarn install
