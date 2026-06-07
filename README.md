@@ -76,8 +76,8 @@ cd infinity-gauntlet
 ```
 
 
-<strong> 2. Install dependencies</strong></b>
- <strong>Frontend</strong>
+<strong> 2. Install dependencies</strong>
+ <p><b>Frontend</b><p>
 
 
 ```bash
@@ -85,7 +85,7 @@ cd frontend
 yarn install
 ```
 
-<strong>Backend</strong> 
+<p><b>Backend</p></b>
 
 ```bash
 cd backend 
