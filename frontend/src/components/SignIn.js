@@ -1,10 +1,7 @@
 import React, { useState } from "react";
-const [error, setError] = useState("");
-const [loading, setLoading] = useState(false);
 
 const validatePassword = (password) => {
   const errors = [];
-
   if (password.length < 8)
     errors.push("At least 8 characters");
   if (!/[A-Z]/.test(password))
@@ -17,54 +14,57 @@ const validatePassword = (password) => {
     errors.push("No sequential numbers (123, 234...)");
   if (/000|111|222|333|444|555|666|777|888|999/.test(password))
     errors.push("No repeated numbers (111, 222...)");
-
   return errors;
 };
 
-const SignIn = ({ onShowLogin }) => {
+const SignIn = ({ onShowLogin, onLogin }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordFocused, setPasswordFocused] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const passwordErrors = validatePassword(password);
   const passwordValid = password.length > 0 && passwordErrors.length === 0;
   const passwordMatch = confirmPassword.length > 0 && password === confirmPassword;
   const passwordNoMatch = confirmPassword.length > 0 && password !== confirmPassword;
+  const canSubmit = passwordValid && passwordMatch && name && email;
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  if (passwordErrors.length > 0 || passwordNoMatch) return;
-  setError("");
-  setLoading(true);
+    e.preventDefault();
+    if (passwordErrors.length > 0 || passwordNoMatch) return;
+    setError("");
+    setLoading(true);
 
-  try {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/v1/auth/register`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password }),
-    });
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/v1/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      });
 
-    const data = await response.json();
+      const data = await response.json();
+      console.log("Response status:", response.status);
+      console.log("Response data:", data);
 
-    if (!response.ok) {
-      setError(data.message || "Registration failed");
-      return;
+      if (!response.ok) {
+        setError(data.message || "Registration failed");
+        return;
+      }
+
+      console.log("Token a guardar:", data.token);
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      onLogin();
+
+    } catch (err) {
+      setError("Connection error, try again later");
+    } finally {
+      setLoading(false);
     }
-
-    localStorage.setItem("token", data.token);
-    localStorage.setItem("user", JSON.stringify(data.user));
-    onLogin();
-
-  } catch (error) {
-    setError("Connection error, try again later");
-  } finally {
-    setLoading(false);
-  }
-};
-
-  const canSubmit = passwordValid && passwordMatch && name && email;
+  };
 
   return (
     <div className="auth-container">
@@ -87,7 +87,6 @@ const SignIn = ({ onShowLogin }) => {
           onChange={(e) => setEmail(e.target.value)}
         />
 
-        {/* CONTRASEÑA */}
         <input
           className="auth-input"
           type="password"
@@ -104,7 +103,6 @@ const SignIn = ({ onShowLogin }) => {
           }}
         />
 
-        {/* CHECKLIST DE REQUISITOS */}
         {(passwordFocused && password.length > 0) && (
           <div style={{
             background: "rgba(255,255,255,0.05)",
@@ -131,7 +129,6 @@ const SignIn = ({ onShowLogin }) => {
           </div>
         )}
 
-        {/* CONFIRMAR CONTRASEÑA */}
         <div style={{ position: "relative" }}>
           <input
             className="auth-input"
@@ -171,16 +168,22 @@ const SignIn = ({ onShowLogin }) => {
           </p>
         )}
 
+        {error && (
+          <p style={{ color: "var(--danger-a0)", fontSize: "13px", textAlign: "left" }}>
+            ⚠️ {error}
+          </p>
+        )}
+
         <button
           className="auth-button"
           type="submit"
-          disabled={!canSubmit}
+          disabled={!canSubmit || loading}
           style={{
-            opacity: !canSubmit ? 0.5 : 1,
-            cursor: !canSubmit ? "not-allowed" : "pointer",
+            opacity: !canSubmit || loading ? 0.5 : 1,
+            cursor: !canSubmit || loading ? "not-allowed" : "pointer",
           }}
         >
-          Registrarse
+          {loading ? "Creando cuenta..." : "Registrarse"}
         </button>
       </form>
 

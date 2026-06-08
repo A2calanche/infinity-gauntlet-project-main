@@ -9,9 +9,24 @@ import { AuthRouter } from "./routers/auth-routers.js";
 dotenv.config();
 
 const api = express();
-const apiPort = process.env.PORT || 8000;
+const apiPort = process.env.PORT
 
-api.use(cors());
+api.use(cors({
+  origin: [
+    "http://localhost:3000",
+    "https://legendary-fiesta-g4qjpw6ggw5j3vj95-3000.app.github.dev"
+  ],
+  credentials: true,
+}));
+const corsOptions = {
+  origin: "*",
+  methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: false,
+};
+
+api.use(cors(corsOptions));
+api.options("/{*PATH}", cors(corsOptions));
 api.use(express.json());
 api.use(express.urlencoded({ extended: false }));
 api.use(morgan("dev"));

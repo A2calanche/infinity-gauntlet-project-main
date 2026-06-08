@@ -8,11 +8,11 @@ export const TodosRouter = express.Router();
 /* C.R.U.D. */
 
 //GET
-TodosRouter.post("/to-do", authMiddleware, validator, async function (request, response) {
+TodosRouter.get("/to-dos", authMiddleware, async function (request, response) {
   try {
-    const { title, description, is_done, status } = request.body;
-      response.send({ todos });  
-     } catch (error) {
+    const todos = await Todo.find({ userId: request.user.id });
+    response.send({ todos });
+  } catch (error) {
     response.status(500).send({
       message: "Something went wrong trying to get todos",
       error,
@@ -20,8 +20,8 @@ TodosRouter.post("/to-do", authMiddleware, validator, async function (request, r
   }
 });
 
-//READ
-TodosRouter.post("/to-do", validator, authMiddleware, async function (request, response) {
+//POST
+TodosRouter.post("/to-dos", validator, authMiddleware, async function (request, response) {
       try {
 
         const { title, description, is_done, status } = request.body;
@@ -39,7 +39,7 @@ TodosRouter.post("/to-do", validator, authMiddleware, async function (request, r
     })
 
 //UPDATE
-TodosRouter.patch("/to-do/:id", authMiddleware, async function (request, response) {
+TodosRouter.patch("/to-dos/:id", authMiddleware, async function (request, response) {
   try {
     const { id } = request.params;
 
@@ -72,7 +72,7 @@ TodosRouter.patch("/to-do/:id", authMiddleware, async function (request, respons
 });
 
 //DELETE
-TodosRouter.delete("/to-do/:id", authMiddleware, async function (request, response) {
+TodosRouter.delete("/to-dos/:id", authMiddleware, async function (request, response) {
   try {
     const { id } = request.params;
 

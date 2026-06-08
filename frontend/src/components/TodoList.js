@@ -5,13 +5,14 @@ import { useEffect } from "react";
 import {llamarLista, createTodo, actualizar, eliminar, } from "./conection";
 
 //Crear To Do list
-function TodoList() {
+function TodoList({ onLogout }) {
   const [todos, setTodos] = useState([]);
   useEffect(() => {
-    llamarLista()
- //   console.log(todos);
-  }, [todos]);
-
+    llamarLista().then((data) => {
+    if (data && data.todos) setTodos(data.todos);
+  });
+}, []);
+  
   //Añadir elementos al To Do List
   const addTodo = async  (todo) => {
    
@@ -19,7 +20,7 @@ function TodoList() {
       return ;
     }
     const todoId = await createTodo(todo);
-    todo.id = todoId.id;
+    todo.id = todoId.id || todoId._id;
  //   console.log(todo)
     const newTodos = [todo, ...todos];
 
@@ -76,18 +77,33 @@ const completeTodo = (id) => {
   };
   
   return (
-    <>
+  <>
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
       <h1>What's the Plan for Today?</h1>
-      <TodoForm onSubmit={addTodo} />
-      <Todo
-        todos={todos}
-        completeTodo={completeTodo}
-        removeTodo={removeTodo}
-        updateTodo={updateTodo}
-        showDescription={showDescription}
-      />
-    </>
-  );
+      <button
+        onClick={onLogout}
+        style={{
+          background: "transparent",
+          border: "1px solid var(--danger-a0)",
+          borderRadius: "8px",
+          padding: "6px 14px",
+          color: "var(--danger-a0)",
+          cursor: "pointer",
+          fontSize: "13px",
+        }}
+      >
+        Logout
+      </button>
+    </div>
+    <TodoForm onSubmit={addTodo} />
+    <Todo
+      todos={todos}
+      completeTodo={completeTodo}
+      removeTodo={removeTodo}
+      updateTodo={updateTodo}
+      showDescription={showDescription}
+    />
+  </>
+);
 }
-
 export default TodoList;

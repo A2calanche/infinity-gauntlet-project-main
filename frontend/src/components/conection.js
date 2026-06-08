@@ -8,14 +8,17 @@ const getHeaders = () => ({
 
 //GET
 export const llamarLista = async () =>{
-   try{ const respuesta = await fetch(`${API_URL}/v1/to-dos`);
+   try{
+    const respuesta = await fetch(`${API_URL}/v1/to-dos`, {
+      headers: getHeaders(),
+    });
     console.log(respuesta.status);
     const data = await respuesta.json();
-        return data;
-    } catch (error) {
-        console.error(error);
-    }
-  };
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 //POST
   
@@ -23,7 +26,7 @@ export const createTodo = async (todo) => {
     try {
       const response = await fetch(`${API_URL}/v1/to-do`, {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: getHeaders(),
         body: JSON.stringify({
           title: todo.text,
           description: todo.description,
@@ -43,9 +46,7 @@ export const createTodo = async (todo) => {
     try {
       const respuesta = await fetch(`${API_URL}/v1/to-do/${id}`, {
         method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getHeaders(),
         body: JSON.stringify({
           title: updatedTodo.text,
           description: updatedTodo.description,
@@ -66,7 +67,7 @@ export const createTodo = async (todo) => {
     try{
       const respuesta = await fetch(`${API_URL}/v1/to-do/${id}`,{
         method : 'DELETE',
-        headers:{'Content-Type': 'application/json'}
+        headers:getHeaders(),
       });
       return respuesta.status;
     } catch (error) {

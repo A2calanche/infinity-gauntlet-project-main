@@ -4,10 +4,16 @@ import LogIn from "./components/LogIn";
 import SignIn from "./components/SignIn";
 import TodoList from "./components/TodoList";
 
+
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
   const [showLogin, setShowLogin] = useState(true);
   const [isDark, setIsDark] = useState(window.matchMedia("(prefers-color-scheme: dark)").matches);
+  const handleLogout = () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+  setIsAuthenticated(false);
+};
 
   useEffect(() => {
     document.documentElement.setAttribute(
@@ -29,14 +35,14 @@ function App() {
 
       <div className="todo-app">
         {isAuthenticated ? (
-          <TodoList />
+          <TodoList onLogout={handleLogout}/>
         ) : showLogin ? (
           <LogIn
             onLogin={() => setIsAuthenticated(true)}
             onShowSignIn={() => setShowLogin(false)}
           />
         ) : (
-          <SignIn onShowLogin={() => setShowLogin(true)} />
+          <SignIn onShowLogin={() => setShowLogin(true)} onLogin={() => setIsAuthenticated(true)} />
         )}
       </div>
     </>
