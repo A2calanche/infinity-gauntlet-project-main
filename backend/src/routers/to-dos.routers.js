@@ -25,7 +25,7 @@ TodosRouter.post("/to-dos", validator, authMiddleware, async function (request, 
       try {
 
         const { title, description, is_done, status } = request.body;
-        const todo = new Todo({title, description,  is_done: is_done || false, status: status || "pending"});
+        const todo = new Todo({title, description,  is_done: is_done || false, status: status || "pending",   userId: request.user.id,});
         const savedTodo = await todo.save();
             response.status(201).send({ id: savedTodo._id });
               }

@@ -29,6 +29,7 @@ AuthRouter.post("/register", async function (request, response) {
 
     response.status(201).send({
       message: "User created successfully",
+      token,
       user: {
         id: user._id,
         name: user.name
@@ -70,6 +71,7 @@ AuthRouter.post("/login", async function (request, response) {
 
     response.send({
       message: "Login successful",
+      token,
       user: {
         id: user._id,
         name: user.name,

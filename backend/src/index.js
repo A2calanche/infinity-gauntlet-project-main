@@ -13,23 +13,23 @@ const apiPort = process.env.PORT
 
 api.use(cors({
   origin: [
-    "http://localhost:3000",
+    "http://localhost:3000","http://127.0.0.1:3000",
     "https://legendary-fiesta-g4qjpw6ggw5j3vj95-3000.app.github.dev"
-  ],
-  credentials: true,
-}));
-const corsOptions = {
-  origin: "*",
+   ],
   methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: false,
-};
+  credentials: true,
+}));
 
-api.use(cors(corsOptions));
-api.options("/{*PATH}", cors(corsOptions));
 api.use(express.json());
 api.use(express.urlencoded({ extended: false }));
 api.use(morgan("dev"));
+
+api.use((req, res, next) => {
+  console.log(req.method, req.path);
+  next();
+});
+
 api.use("/v1", TodosRouter);
 api.use("/v1/auth", AuthRouter);
 

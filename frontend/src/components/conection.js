@@ -24,7 +24,7 @@ export const llamarLista = async () =>{
   
 export const createTodo = async (todo) => {
     try {
-      const response = await fetch(`${API_URL}/v1/to-do`, {
+      const response = await fetch(`${API_URL}/v1/to-dos`, {
         method: 'POST',
         headers: getHeaders(),
         body: JSON.stringify({
@@ -44,7 +44,7 @@ export const createTodo = async (todo) => {
   //PATCH(description)
   export const actualizar = async (id, updatedTodo) => {
     try {
-      const respuesta = await fetch(`${API_URL}/v1/to-do/${id}`, {
+      const respuesta = await fetch(`${API_URL}/v1/to-dos/${id}`, {
         method: 'PATCH',
         headers: getHeaders(),
         body: JSON.stringify({
@@ -65,7 +65,7 @@ export const createTodo = async (todo) => {
   //DELETE
   export const eliminar = async(id)=>{
     try{
-      const respuesta = await fetch(`${API_URL}/v1/to-do/${id}`,{
+      const respuesta = await fetch(`${API_URL}/v1/to-dos/${id}`,{
         method : 'DELETE',
         headers:getHeaders(),
       });
