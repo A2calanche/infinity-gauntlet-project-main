@@ -39,7 +39,7 @@ AuthRouter.post("/register", async function (request, response) {
     console.error(error);
     response.status(500).send({
       message: "Something went wrong trying to register",
-      error: error.message,
+      error: error,
     });
   }
 });
