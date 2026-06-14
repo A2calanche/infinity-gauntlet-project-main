@@ -1,18 +1,17 @@
 {
-  "name": "cc-infinity-gauntlet-main",
+  "name": "infinity-gauntlet",
   "version": "1.0.0",
-  "description": "<p align=\"center\">   <img      align=\"center\"      width=\"400\"      height=\"400\"      src=\"./docs/img/fundamentals.png\"    /> </p>",
+  "description": "Full-stack productivity app built with the MERN stack",
   "main": "index.js",
   "directories": {
     "doc": "docs"
   },
   "scripts": {
-    "start": "concurrently \"yarn --cwd frontend start\" \"yarn --cwd backend start\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "concurrently \"yarn --cwd backend start\" \"yarn --cwd frontend start\""
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "concurrently": "^10.0.3"
   }
