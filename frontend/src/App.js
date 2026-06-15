@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./App.css";
+import "./App.scss";
 import LogIn from "./components/LogIn";
 import SignIn from "./components/SignIn";
 import TodoList from "./components/TodoList";
