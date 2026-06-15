@@ -1,0 +1,66 @@
+{
+  "theme": {
+    "light": "Claro",
+    "dark": "Oscuro"
+  },
+  "landing": {
+    "title": "Infinity Gauntlet",
+    "subtitle": "Un gestor de tareas limpio, seguro e intuitivo para mantener tu trabajo organizado, donde quiera que estés.",
+    "getStarted": "Comenzar",
+    "signIn": "Iniciar sesión",
+    "previewTitle": "¿Cuál es el plan para hoy?",
+    "previewTask1": "Terminar propuesta del proyecto",
+    "previewTask2": "Revisar pull requests",
+    "previewTask3": "Reunión diaria",
+    "featuresTitle": "Todo lo que necesitás para ser productivo",
+    "features": [
+      { "icon": "✅", "title": "Gestión de tareas estilo Kanban", "description": "Organizá tus tareas en columnas de Pendiente, En curso y Hecho para una visión clara de tu progreso." },
+      { "icon": "🔒", "title": "Autenticación segura", "description": "Tu cuenta está protegida con autenticación JWT y contraseñas encriptadas." },
+      { "icon": "🎨", "title": "Temas claro y oscuro", "description": "Cambiá fácilmente entre modo claro y oscuro según tu preferencia." },
+      { "icon": "📱", "title": "Totalmente responsive", "description": "Gestioná tus tareas desde escritorio, tablet o móvil con una experiencia consistente." },
+      { "icon": "🔔", "title": "Recordatorios inteligentes", "description": "Mantente al día con notificaciones y recordatorios para tus tareas." },
+      { "icon": "🔐", "title": "Espacio privado", "description": "Cada usuario tiene su propia lista de tareas aislada — tus datos son solo tuyos." }
+    ],
+    "footerCtaTitle": "¿Listo para organizarte?",
+    "footerCtaButton": "Crea tu cuenta gratis"
+  },
+  "login": {
+    "title": "Iniciar Sesión",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "submit": "Entrar",
+    "submitting": "Entrando...",
+    "noAccount": "¿No tenés cuenta?",
+    "createAccount": "Crear cuenta",
+    "orContinueWith": "También podés iniciar sesión con",
+    "google": "Google"
+  },
+  "signin": {
+    "title": "Crear Cuenta",
+    "name": "Nombre",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "confirmPassword": "Confirmar contraseña",
+    "submit": "Registrarse",
+    "submitting": "Creando cuenta...",
+    "haveAccount": "¿Ya tenés cuenta?",
+    "signIn": "Iniciar sesión",
+    "passwordRules": {
+      "minLength": "Al menos 8 caracteres",
+      "uppercase": "Al menos una letra mayúscula",
+      "number": "Al menos un número",
+      "special": "Al menos un carácter especial (@#$%.+-*/!)",
+      "noSequential": "Sin números secuenciales (123, 234...)",
+      "noRepeated": "Sin números repetidos (111, 222...)"
+    },
+    "passwordsMatch": "Las contraseñas coinciden ✓",
+    "passwordsNoMatch": "Las contraseñas no coinciden"
+  },
+  "todo": {
+    "title": "¿Cuál es el plan para hoy?",
+    "logout": "Cerrar sesión",
+    "placeholder": "Agregar una nueva tarea...",
+    "descriptionPlaceholder": "Agregar una descripción...",
+    "addButton": "Agregar"
+  }
+}

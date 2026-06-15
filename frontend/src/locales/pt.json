@@ -1,0 +1,66 @@
+{
+  "theme": {
+    "light": "Claro",
+    "dark": "Escuro"
+  },
+  "landing": {
+    "title": "Infinity Gauntlet",
+    "subtitle": "Um gerenciador de tarefas limpo, seguro e intuitivo para manter seu trabalho organizado, onde quer que você esteja.",
+    "getStarted": "Começar",
+    "signIn": "Entrar",
+    "previewTitle": "Qual é o plano de hoje?",
+    "previewTask1": "Finalizar proposta do projeto",
+    "previewTask2": "Revisar pull requests",
+    "previewTask3": "Reunião diária",
+    "featuresTitle": "Tudo que você precisa para ser produtivo",
+    "features": [
+      { "icon": "✅", "title": "Gestão de tarefas estilo Kanban", "description": "Organize suas tarefas em colunas de Pendente, Em andamento e Concluído para uma visão clara do seu progresso." },
+      { "icon": "🔒", "title": "Autenticação segura", "description": "Sua conta é protegida com autenticação JWT e senhas criptografadas." },
+      { "icon": "🎨", "title": "Temas claro e escuro", "description": "Alterne facilmente entre modo claro e escuro de acordo com sua preferência." },
+      { "icon": "📱", "title": "Totalmente responsivo", "description": "Gerencie suas tarefas no desktop, tablet ou celular com uma experiência consistente." },
+      { "icon": "🔔", "title": "Lembretes inteligentes", "description": "Fique por dentro dos prazos com notificações e lembretes para suas tarefas." },
+      { "icon": "🔐", "title": "Espaço privado", "description": "Cada usuário tem sua própria lista de tarefas isolada — seus dados são só seus." }
+    ],
+    "footerCtaTitle": "Pronto para se organizar?",
+    "footerCtaButton": "Crie sua conta gratuita"
+  },
+  "login": {
+    "title": "Entrar",
+    "email": "E-mail",
+    "password": "Senha",
+    "submit": "Entrar",
+    "submitting": "Entrando...",
+    "noAccount": "Não tem uma conta?",
+    "createAccount": "Criar conta",
+    "orContinueWith": "Ou continue com",
+    "google": "Google"
+  },
+  "signin": {
+    "title": "Criar Conta",
+    "name": "Nome",
+    "email": "E-mail",
+    "password": "Senha",
+    "confirmPassword": "Confirmar senha",
+    "submit": "Cadastrar",
+    "submitting": "Criando conta...",
+    "haveAccount": "Já tem uma conta?",
+    "signIn": "Entrar",
+    "passwordRules": {
+      "minLength": "Pelo menos 8 caracteres",
+      "uppercase": "Pelo menos uma letra maiúscula",
+      "number": "Pelo menos um número",
+      "special": "Pelo menos um caractere especial (@#$%.+-*/!)",
+      "noSequential": "Sem números sequenciais (123, 234...)",
+      "noRepeated": "Sem números repetidos (111, 222...)"
+    },
+    "passwordsMatch": "As senhas coincidem ✓",
+    "passwordsNoMatch": "As senhas não coincidem"
+  },
+  "todo": {
+    "title": "Qual é o plano de hoje?",
+    "logout": "Sair",
+    "placeholder": "Adicionar uma nova tarefa...",
+    "descriptionPlaceholder": "Adicionar uma descrição...",
+    "addButton": "Adicionar"
+  }
+}

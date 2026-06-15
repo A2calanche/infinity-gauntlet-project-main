@@ -1,0 +1,66 @@
+{
+  "theme": {
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "landing": {
+    "title": "Infinity Gauntlet",
+    "subtitle": "A clean, secure, and intuitive task manager built to keep your work organized — wherever you are.",
+    "getStarted": "Get Started",
+    "signIn": "Sign In",
+    "previewTitle": "What's the Plan for Today?",
+    "previewTask1": "Finish project proposal",
+    "previewTask2": "Review pull requests",
+    "previewTask3": "Daily standup",
+    "featuresTitle": "Everything you need to stay productive",
+    "features": [
+      { "icon": "✅", "title": "Kanban-style task management", "description": "Organize your tasks across Pending, Doing, and Done columns for a clear view of your progress." },
+      { "icon": "🔒", "title": "Secure authentication", "description": "Your account is protected with JWT-based authentication and encrypted passwords." },
+      { "icon": "🎨", "title": "Dark & light themes", "description": "Switch seamlessly between light and dark mode based on your preference." },
+      { "icon": "📱", "title": "Fully responsive", "description": "Manage your tasks from desktop, tablet, or mobile with a consistent experience." },
+      { "icon": "🔔", "title": "Smart reminders", "description": "Stay on top of deadlines with notifications and reminders for your tasks." },
+      { "icon": "🔐", "title": "Private workspace", "description": "Each user has their own isolated task list — your data is yours alone." }
+    ],
+    "footerCtaTitle": "Ready to get organized?",
+    "footerCtaButton": "Create your free account"
+  },
+  "login": {
+    "title": "Sign In",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Sign In",
+    "submitting": "Signing in...",
+    "noAccount": "Don't have an account?",
+    "createAccount": "Create account",
+    "orContinueWith": "Or continue with",
+    "google": "Google"
+  },
+  "signin": {
+    "title": "Create Account",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "submit": "Sign Up",
+    "submitting": "Creating account...",
+    "haveAccount": "Already have an account?",
+    "signIn": "Sign in",
+    "passwordRules": {
+      "minLength": "At least 8 characters",
+      "uppercase": "At least one uppercase letter",
+      "number": "At least one number",
+      "special": "At least one special character (@#$%.+-*/!)",
+      "noSequential": "No sequential numbers (123, 234...)",
+      "noRepeated": "No repeated numbers (111, 222...)"
+    },
+    "passwordsMatch": "Passwords match ✓",
+    "passwordsNoMatch": "Passwords don't match"
+  },
+  "todo": {
+    "title": "What's the Plan for Today?",
+    "logout": "Logout",
+    "placeholder": "Add a new task...",
+    "descriptionPlaceholder": "Add a description...",
+    "addButton": "Add"
+  }
+}

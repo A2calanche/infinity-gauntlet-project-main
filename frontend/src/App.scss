@@ -1,0 +1,696 @@
+// ===========================
+// THEME MAPS
+// ===========================
+$dark-theme: (
+  primary-a0: #b443b2, primary-a10: #bd59ba, primary-a20: #c56cc2,
+  primary-a30: #ce7fca, primary-a40: #d692d2, primary-a50: #dda4da,
+
+  surface-a0: #121212, surface-a10: #252525, surface-a20: #393939,
+  surface-a30: #4f4f4f, surface-a40: #666666, surface-a50: #7d7d7d,
+
+  surface-tonal-a0: #201820, surface-tonal-a10: #332b33, surface-tonal-a20: #463f46,
+  surface-tonal-a30: #5b545b, surface-tonal-a40: #706a70, surface-tonal-a50: #878287,
+
+  success-a0: #7dff95, success-a10: #9dffac, success-a20: #b8ffc1,
+  warning-a0: #ffbc5e, warning-a10: #ffca83, warning-a20: #ffd8a4,
+  danger-a0: #ff8080, danger-a10: #ff9b99, danger-a20: #ffb5b2,
+  info-a0: #87d1ff, info-a10: #a1dbff, info-a20: #b9e4ff,
+
+  bg-gradient-start: #1a0a1a, bg-gradient-end: #0a0a1a,
+  card-bg: #161a2b,
+  text-primary: #ffffff,
+  text-secondary: rgba(255, 255, 255, 0.8),
+  text-muted: rgba(255, 255, 255, 0.5),
+  input-bg: transparent,
+);
+
+$light-theme: (
+  primary-a0: #3d5af1, primary-a10: #5470f3, primary-a20: #6b86f5,
+  primary-a30: #829cf6, primary-a40: #99b2f8, primary-a50: #b0c8fa,
+
+  surface-a0: #ffffff, surface-a10: #f5f5f5, surface-a20: #ebebeb,
+  surface-a30: #dedede, surface-a40: #cecece, surface-a50: #bebebe,
+
+  surface-tonal-a0: #f5eef5, surface-tonal-a10: #e8dce8, surface-tonal-a20: #dccbdc,
+  surface-tonal-a30: #cfbacf, surface-tonal-a40: #c3aac3, surface-tonal-a50: #b79ab7,
+
+  success-a0: #1a8c32, success-a10: #22a33c, success-a20: #2dba48,
+  warning-a0: #cc8a00, warning-a10: #e69c00, warning-a20: #ffaf00,
+  danger-a0: #cc0000, danger-a10: #e01414, danger-a20: #f02828,
+  info-a0: #0077cc, info-a10: #008ae6, info-a20: #009dff,
+
+  bg-gradient-start: #f0e4f0, bg-gradient-end: #e4e4f5,
+  card-bg: #ffffff,
+  text-primary: #1a0a1a,
+  text-secondary: rgba(0, 0, 0, 0.8),
+  text-muted: rgba(0, 0, 0, 0.5),
+  input-bg: rgba(0, 0, 0, 0.03),
+);
+
+// ===========================
+// MIXIN: emite todas las custom properties de un theme map
+// ===========================
+@mixin theme-vars($map) {
+  @each $key, $value in $map {
+    --#{$key}: #{$value};
+  }
+  --input-border: var(--primary-a0);
+  --toggle-bg: var(--surface-tonal-a10);
+}
+
+:root {
+  @include theme-vars($dark-theme);
+}
+
+[data-theme="light"] {
+  @include theme-vars($light-theme);
+}
+
+// ===========================
+// BASE
+// ===========================
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(0deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+}
+
+// ===========================
+// THEME TOGGLE
+// ===========================
+.theme-toggle {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+
+  z-index: 9999;
+
+  background: var(--toggle-bg);
+  color: var(--text-primary);
+
+  border: 1px solid var(--primary-a0);
+  border-radius: 20px;
+
+  padding: 6px 14px;
+  height: 40px;
+
+  cursor: pointer;
+  font-size: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.theme-toggle:hover {
+  background: var(--surface-tonal-a20);
+}
+.language-selector {
+  position: fixed;
+  top: 16px;
+  right: 170px;
+
+  z-index: 9999;
+
+  background: var(--toggle-bg);
+  color: var(--text-primary);
+
+  border: 1px solid var(--primary-a0);
+  border-radius: 20px;
+
+  padding: 6px 14px;
+  height: 40px;
+
+  cursor: pointer;
+  outline: none;
+
+  font-size: 18px;
+
+  display: flex;
+  align-items: center;
+}
+
+.language-selector:hover {
+  background: var(--surface-tonal-a20);
+}
+
+// ===========================
+// CARD / TODO APP
+// ===========================
+.todo-app {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  width: 520px;
+  min-height: 400px;
+  background: var(--card-bg);
+  text-align: center;
+  margin: 50px auto;
+  border-radius: 25px;
+  padding: 0 50px;
+  padding-bottom: 32px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+  margin: 32px 0;
+  color: var(--text-primary);
+  font-size: 24px;
+}
+
+// ===========================
+// TODO
+// ===========================
+.complete {
+  text-decoration: line-through;
+  opacity: 0.4;
+}
+
+.todo-form {
+  width: 100%;
+  margin-bottom: 32px;
+}
+
+.todo-input {
+  padding: 14px 32px 14px 16px;
+  border-radius: 4px;
+  border: 2px solid var(--input-border);
+  outline: none;
+  width: 70%;
+  background: var(--input-bg);
+  color: var(--text-primary);
+
+  &::placeholder {
+    color: var(--text-muted);
+  }
+
+  &.edit {
+    border: 2px solid var(--info-a0);
+  }
+}
+
+.todo-description {
+  margin-top: 10px;
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+  min-height: 50px;
+}
+
+@mixin gradient-button($from, $to) {
+  background: linear-gradient(90deg, var($from) 0%, var($to) 100%);
+}
+
+.todo-button {
+  height: fit-content;
+  width: fit-content;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+  margin: 0 2px;
+  padding: 16px 22px;
+  @include gradient-button(--primary-a0, --primary-a20);
+  color: #fff;
+  text-transform: capitalize;
+
+  &.edit {
+    @include gradient-button(--info-a0, --info-a10);
+  }
+}
+
+.todo-container {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+
+.todo-row {
+  justify-content: space-between;
+  align-items: center;
+  margin: 4px auto;
+  color: #fff;
+  padding: 16px;
+  border-radius: 5px;
+  width: 100%;
+}
+
+// Genera los 4 gradientes alternados con un loop
+$row-gradients: (
+  1: (--primary-a0, --primary-a20),
+  2: (--primary-a10, --primary-a30),
+  3: (--info-a0, --info-a10),
+  4: (--primary-a20, --primary-a40),
+);
+
+@each $n, $colors in $row-gradients {
+  .todo-row:nth-child(4n + #{$n}) {
+    @include gradient-button(nth($colors, 1), nth($colors, 2));
+  }
+}
+
+.icons {
+  display: flex;
+  align-items: center;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.delete-icon,
+.edit-icon {
+  color: #fff;
+}
+
+.delete-icon {
+  margin-right: 5px;
+}
+
+.done {
+  text-decoration: line-through;
+}
+
+.todo {
+  width: 100%;
+  text-align: left;
+}
+
+.description {
+  display: flex;
+}
+
+// ===========================
+// AUTH
+// ===========================
+.auth-container {
+  width: 100%;
+  margin-top: 25px;
+}
+
+.auth-title {
+  color: var(--text-primary);
+  margin: 20px 0;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth-input {
+  padding: 14px 16px;
+  border-radius: 4px;
+  border: 2px solid var(--input-border);
+  outline: none;
+  background: var(--input-bg);
+  color: var(--text-primary);
+  width: 100%;
+
+  &::placeholder {
+    color: var(--text-muted);
+  }
+}
+
+.auth-button {
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 14px;
+  color: #fff;
+  font-weight: bold;
+  @include gradient-button(--primary-a0, --primary-a20);
+}
+
+.auth-divider {
+  margin: 25px 0;
+  border: 1px solid var(--surface-a30);
+}
+
+.auth-footer {
+  margin-top: 25px;
+  text-align: center;
+
+  p {
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+  }
+}
+
+.auth-link-button {
+  background: transparent;
+  border: none;
+  color: var(--primary-a10);
+  cursor: pointer;
+  font-size: 15px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.social-login {
+  margin-top: 30px;
+  text-align: center;
+  padding-bottom: 20px;
+
+  p {
+    color: var(--text-secondary);
+    margin-bottom: 15px;
+  }
+}
+
+.google-button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 4px;
+  border: 1px solid var(--surface-a30);
+  background: var(--surface-a0);
+  color: var(--text-primary);
+  cursor: pointer;
+  font-weight: bold;
+
+  &:hover {
+    background: var(--surface-a10);
+  }
+}
+
+// ===========================
+// RESPONSIVE
+// ===========================
+@media (max-width: 768px) {
+  .todo-app {
+    width: 90%;
+    padding: 0 30px;
+    padding-bottom: 32px;
+    margin: 30px auto;
+  }
+
+  .theme-toggle {
+    top: 10px;
+    right: 10px;
+    padding: 5px 10px;
+    font-size: 16px;
+  }
+  .language-selector {
+    top: 10px;
+    right: 145px;
+    height: 36px;
+    padding: 5px 10px;
+    font-size: 16px;
+  }
+}
+
+
+@media (max-width: 480px) {
+  .todo-app {
+    width: 95%;
+    padding: 0 18px;
+    padding-bottom: 24px;
+    margin: 16px auto;
+    border-radius: 16px;
+  }
+  
+
+  h1 {
+    font-size: 20px;
+    margin: 24px 0;
+  }
+
+  .todo-input {
+    width: 60%;
+    padding: 10px 12px;
+  }
+
+  .todo-button {
+    padding: 10px 14px;
+    font-size: 14px;
+  }
+
+  .auth-input {
+    padding: 12px 14px;
+    font-size: 15px;
+  }
+
+  .auth-button,
+  .google-button {
+    padding: 12px;
+  }
+
+  .theme-toggle {
+    top: 8px;
+    right: 8px;
+    height: 34px;
+    padding: 4px 8px;
+    font-size: 14px;
+  }
+
+  .language-selector {
+    top: 8px;
+    right: 125px;
+    height: 34px;
+    padding: 4px 8px;
+    font-size: 14px;
+  }
+
+  .todo-row {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .icons {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 320px) {
+  .todo-app {
+    width: 98%;
+    padding: 0 12px;
+    padding-bottom: 16px;
+    margin: 8px auto;
+  }
+
+  .todo-input {
+    width: 55%;
+  }
+}// ===========================
+// LANDING PAGE
+// ===========================
+.landing {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+  color: var(--text-primary);
+}
+
+.landing-hero {
+  text-align: center;
+  padding: 100px 20px 60px;
+}
+
+.landing-title {
+  font-size: 3.5rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+  background: linear-gradient(90deg, var(--primary-a0) 0%, var(--primary-a30) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.landing-subtitle {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto 32px;
+  line-height: 1.6;
+}
+
+.landing-cta {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.landing-button-primary {
+  display: inline-block;
+  text-decoration: none;
+  padding: 14px 32px;
+  font-size: 1rem;
+}
+
+.landing-button-secondary {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 14px 32px;
+  border-radius: 4px;
+  border: 2px solid var(--primary-a0);
+  color: var(--text-primary);
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background: var(--surface-tonal-a10);
+  }
+}
+
+// PREVIEW CARD
+.landing-preview {
+  display: flex;
+  justify-content: center;
+  padding: 0 20px 80px;
+}
+
+.landing-preview-card {
+  width: 100%;
+  max-width: 480px;
+  background: var(--card-bg);
+  border-radius: 20px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+.landing-preview-header {
+  display: flex;
+  gap: 8px;
+  padding: 14px 18px;
+  background: var(--surface-tonal-a10);
+}
+
+.landing-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.landing-preview-body {
+  padding: 24px;
+  text-align: left;
+
+  h3 {
+    margin-bottom: 16px;
+    text-align: center;
+  }
+}
+
+.landing-preview-row {
+  padding: 14px;
+  border-radius: 5px;
+  color: #fff;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+
+.landing-preview-done {
+  opacity: 0.7;
+}
+
+// FEATURES
+.landing-section-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 40px;
+}
+
+.landing-features {
+  padding: 40px 0 80px;
+}
+
+.landing-features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.landing-feature-card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+
+  h3 {
+    margin: 12px 0 8px;
+    font-size: 1.1rem;
+  }
+
+  p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+}
+
+.landing-feature-icon {
+  font-size: 2rem;
+}
+
+// FOOTER CTA
+.landing-footer-cta {
+  text-align: center;
+  padding: 60px 20px 100px;
+  background: var(--surface-tonal-a10);
+  border-radius: 24px;
+  margin-bottom: 60px;
+
+  h2 {
+    margin-bottom: 24px;
+    font-size: 1.8rem;
+  }
+}
+// ===========================
+// RESPONSIVE
+// ===========================
+@media (max-width: 768px) {
+  .landing-title {
+    font-size: 2.5rem;
+  }
+
+  .landing-hero {
+    padding: 60px 20px 40px;
+  }
+
+  .landing-cta {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .landing-button-primary,
+  .landing-button-secondary {
+    width: 100%;
+    max-width: 280px;
+    text-align: center;
+    justify-content: center;
+  }
+}.language-selector {
+  position: fixed;
+  top: 16px;
+  right: 130px;
+  z-index: 9999;
+  background: var(--toggle-bg);
+  border: 1px solid var(--primary-a0);
+  border-radius: 20px;
+  padding: 6px 10px;
+  color: var(--text-primary);
+  cursor: pointer;
+  font-size: 14px;
+}
+
+@media (max-width: 480px) {
+  .language-selector {
+    top: 8px;
+    right: 100px;
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+}
