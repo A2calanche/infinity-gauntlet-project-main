@@ -59,7 +59,7 @@ TodosRouter.patch("/to-dos/:id", authMiddleware, async function (request, respon
         is_done: is_done !== undefined ? is_done : todo.is_done,
         status: status || todo.status,
       },
-      { new: true }
+      { returnDocument: 'after'}
     );
 
     response.send({ message: "Todo updated", todo: updatedTodo });
