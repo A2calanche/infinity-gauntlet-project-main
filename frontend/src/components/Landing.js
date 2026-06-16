@@ -56,7 +56,7 @@ const Landing = () => {
 
       <section className="landing-footer-cta">
         <h2>{t("landing.footerCtaTitle")}</h2>
-        <Link to="/Signin" className="auth-button landing-button-primary">
+        <Link to="/signin" className="auth-button landing-button-primary">
           {t("landing.footerCtaButton")}
         </Link>
       </section>

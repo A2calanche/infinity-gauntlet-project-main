@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import TodoForm from "./TodoForm";
 import Todo from "./Todo";
 import { useEffect } from "react";
-import {llamarLista, createTodo, actualizar, eliminar, } from "./conection";
+import {llamarLista, createTodo, actualizar, eliminar, } from "../locales/conection";
 
 //Crear To Do list
 function TodoList({ onLogout }) {

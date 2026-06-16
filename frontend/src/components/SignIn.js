@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const validatePassword = (password) => {
   const errors = [];
@@ -17,7 +18,7 @@ const validatePassword = (password) => {
   return errors;
 };
 
-const SignIn = ({ onShowLogin, onLogin }) => {
+const SignIn = ({ onLogin }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -189,9 +190,9 @@ const SignIn = ({ onShowLogin, onLogin }) => {
 
       <div className="auth-footer">
         <p>¿Ya tienes cuenta?</p>
-        <button type="button" className="auth-link-button" onClick={onShowLogin}>
+        <Link to="/login" className="auth-link-button">
           Iniciar sesión
-        </button>
+        </Link>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
-
-const LogIn = ({ onLogin, onShowSignIn }) => {
+const LogIn = ({ onLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -77,13 +77,9 @@ const LogIn = ({ onLogin, onShowSignIn }) => {
     <div className="auth-footer">
       <p>¿No tienes cuenta?</p>
 
-      <button
-        type="button"
-        className="auth-link-button"
-        onClick={onShowSignIn}
-      >
+      <Link to="/signin" className="auth-link-button">
         Crear cuenta
-      </button>
+      </Link>
     </div>
 
     <div className="social-login">
