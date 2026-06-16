@@ -111,21 +111,59 @@ yarn install
 
 **3. Configure environment variables**
 
-**Backend (.env file in `backend/` folder):**
+#### **Backend (.env file in `backend/` folder):**
 ```bash
 MONGO_URI=mongodb+srv://user:password@cluster0.xxxxx.mongodb.net/infinity-gauntlet
 PORT=3001
 JWT_SECRET=your-super-secret-random-string-here
 TELEGRAM_BOT_TOKEN=your-telegram-bot-token
 TELEGRAM_CHAT_ID=your-chat-id
+
+# Google OAuth - Get these from Google Cloud Console
 GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
+GOOGLE_CALLBACK_URL=http://localhost:3001/auth/google/callback
+GOOGLE_TOKEN_URI=https://oauth2.googleapis.com/token
 ```
 
-**Frontend (.env file in `frontend/` folder):**
+#### **Frontend (.env file in `frontend/` folder):**
 ```bash
 REACT_APP_API_URL=http://localhost:3001
+
+# Google OAuth - Same CLIENT_ID as Backend (must start with REACT_APP_ for Create React App)
+REACT_APP_GOOGLE_CLIENT_ID=your-google-client-id
 ```
+
+#### **Google OAuth Configuration Steps**
+
+1. **Create a Google Cloud Project:**
+   - Go to [Google Cloud Console](https://console.cloud.google.com/)
+   - Create a new project
+
+2. **Enable Google+ API:**
+   - Search for "Google+ API" in the search bar
+   - Click "Enable"
+
+3. **Create OAuth 2.0 Credentials:**
+   - Go to "APIs & Services" → "Credentials"
+   - Click "Create Credentials" → "OAuth 2.0 Client IDs"
+   - Choose "Web application"
+   - Add Authorized JavaScript origins:
+     ```
+     http://localhost:3000
+     http://localhost:3001
+     https://your-production-domain.com
+     ```
+   - Add Authorized redirect URIs:
+     ```
+     http://localhost:3001/auth/google/callback
+     https://your-production-domain.com/auth/google/callback
+     ```
+   - Copy the **Client ID** and **Client Secret**
+
+4. **Add credentials to your .env files:**
+   - Paste `Client ID` in both `backend/.env` (as `GOOGLE_CLIENT_ID`) and `frontend/.env` (as `REACT_APP_GOOGLE_CLIENT_ID`)
+   - Paste `Client Secret` in `backend/.env` (as `GOOGLE_CLIENT_SECRET`)
 
 **4. Run the project**
 
