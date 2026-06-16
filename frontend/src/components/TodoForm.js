@@ -1,8 +1,10 @@
 import React, { useState, useRef } from "react";
 import { BsArrowDown, BsPlusCircleFill } from "react-icons/bs";
 import { RiCheckboxCircleLine } from "react-icons/ri";
+import { useLanguage } from "../context/LanguageContext";
 
 function TodoForm(props) {
+  const { t } = useLanguage();
   const [input, setInput] = useState(props.edit ? props.edit.value : "");
   const [showDescription, setShowDescription] = useState(false);
   const [description, setDescription] = useState(
@@ -27,7 +29,7 @@ function TodoForm(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if(!input||!description){
-      alert("Please fill all the fields.");
+      alert(t("todo.placeholder"));
       return;
     }
     props.onSubmit({
@@ -45,7 +47,7 @@ function TodoForm(props) {
       {props.edit ? (
         <div className="todo-form--update">
           <input
-            placeholder="Update your item"
+            placeholder={t("todo.placeholder")}
             value={input}
             onChange={handleChange}
             name="text"
@@ -53,7 +55,7 @@ function TodoForm(props) {
             className="todo-input edit todo-description"
           />
           <textarea
-            placeholder="Description"
+            placeholder={t("todo.descriptionPlaceholder")}
             value={description}
             onChange={handleDescriptionChange}
             name="description"
@@ -67,7 +69,7 @@ function TodoForm(props) {
       ) : (
         <>
           <input
-            placeholder="Add a todo"
+            placeholder={t("todo.placeholder")}
             value={input}
             onChange={handleChange}
             name="text"
@@ -82,7 +84,7 @@ function TodoForm(props) {
           </button>
           {showDescription && (
             <textarea
-              placeholder="Description"
+              placeholder={t("todo.descriptionPlaceholder")}
               value={description}
               onChange={handleDescriptionChange}
               name="description"

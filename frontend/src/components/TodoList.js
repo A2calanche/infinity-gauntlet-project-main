@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import TodoForm from "./TodoForm";
 import Todo from "./Todo";
 import { useEffect } from "react";
+import { useLanguage } from "../context/LanguageContext";
 import {llamarLista, createTodo, actualizar, eliminar, } from "../services/conection";
 
 //Crear To Do list
 function TodoList({ onLogout }) {
+  const { t } = useLanguage();
   const [todos, setTodos] = useState([]);
   useEffect(() => {
     llamarLista().then((data) => {
@@ -79,7 +81,7 @@ const completeTodo = (id) => {
   return (
   <>
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-      <h1>What's the Plan for Today?</h1>
+      <h1>{t("todo.title")}</h1>
       <button
         onClick={onLogout}
         style={{
@@ -92,7 +94,7 @@ const completeTodo = (id) => {
           fontSize: "13px",
         }}
       >
-        Logout
+        {t("todo.logout")}
       </button>
     </div>
     <TodoForm onSubmit={addTodo} />

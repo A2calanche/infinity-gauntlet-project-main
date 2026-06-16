@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import { useLanguage } from "../context/LanguageContext";
 
 const validatePassword = (password) => {
   const errors = [];
@@ -19,13 +20,17 @@ const validatePassword = (password) => {
 };
 
 const SignIn = ({ onLogin }) => {
+  const { t } = useLanguage();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordFocused, setPasswordFocused] = useState(false);
   const [error, setError] = useState("");
+  const [googleError, setGoogleError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [googleLoaded, setGoogleLoaded] = useState(false);
+  const googleButtonRef = useRef(null);
 
   const passwordErrors = validatePassword(password);
   const passwordValid = password.length > 0 && passwordErrors.length === 0;
@@ -67,15 +72,94 @@ const SignIn = ({ onLogin }) => {
     }
   };
 
+  const handleGoogleResponse = async (response) => {
+    if (!response?.credential) {
+      setGoogleError("Google authentication failed");
+      return;
+    }
+
+    try {
+      const backendResponse = await fetch(`${process.env.REACT_APP_API_URL}/v1/auth/google`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: response.credential }),
+      });
+
+      const data = await backendResponse.json();
+      if (!backendResponse.ok) {
+        setGoogleError(data.message || "Google signup failed");
+        return;
+      }
+
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      onLogin();
+    } catch (err) {
+      setGoogleError("Connection error, try again later");
+    }
+  };
+
+  useEffect(() => {
+    const renderGoogleButton = () => {
+      if (!window.google?.accounts?.id || !googleButtonRef.current) return;
+
+      window.google.accounts.id.initialize({
+        client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+        callback: handleGoogleResponse,
+        ux_mode: "popup",
+      });
+
+      window.google.accounts.id.renderButton(googleButtonRef.current, {
+        theme: "outline",
+        size: "large",
+        text: "signup_with",
+        shape: "rectangular",
+      });
+
+      setGoogleLoaded(true);
+    };
+
+    if (window.google?.accounts?.id) {
+      renderGoogleButton();
+      return;
+    }
+
+    if (document.getElementById("google-client-script")) {
+      const waitForGoogle = setInterval(() => {
+        if (window.google?.accounts?.id) {
+          clearInterval(waitForGoogle);
+          renderGoogleButton();
+        }
+      }, 100);
+      return () => clearInterval(waitForGoogle);
+    }
+
+    const script = document.createElement("script");
+    script.src = "https://accounts.google.com/gsi/client";
+    script.id = "google-client-script";
+    script.async = true;
+    script.defer = true;
+    script.onload = renderGoogleButton;
+    document.body.appendChild(script);
+  }, []);
+
+  const handleGoogleSignUp = () => {
+    if (window.google?.accounts?.id) {
+      window.google.accounts.id.prompt();
+    } else {
+      setGoogleError("Google sign-in is not ready yet");
+    }
+  };
+
   return (
     <div className="auth-container">
-      <h1 className="auth-title">Crear Cuenta</h1>
+      <h1 className="auth-title">{t("signin.title")}</h1>
 
       <form className="auth-form" onSubmit={handleSubmit}>
         <input
           className="auth-input"
           type="text"
-          placeholder="Nombre"
+          placeholder={t("signin.name")}
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
@@ -83,7 +167,7 @@ const SignIn = ({ onLogin }) => {
         <input
           className="auth-input"
           type="email"
-          placeholder="Correo electrónico"
+          placeholder={t("signin.email")}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -91,7 +175,7 @@ const SignIn = ({ onLogin }) => {
         <input
           className="auth-input"
           type="password"
-          placeholder="Contraseña"
+          placeholder={t("signin.password")}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           onFocus={() => setPasswordFocused(true)}
@@ -112,12 +196,12 @@ const SignIn = ({ onLogin }) => {
             textAlign: "left",
           }}>
             {[
-              { rule: password.length >= 8, label: "At least 8 characters" },
-              { rule: /[A-Z]/.test(password), label: "At least one uppercase letter" },
-              { rule: /[0-9]/.test(password), label: "At least one number" },
-              { rule: /[@#$%.+\-*/!]/.test(password), label: "At least one special character (@#$%.+-*/!)" },
-              { rule: !/012|123|234|345|456|567|678|789|890/.test(password), label: "No sequential numbers (123, 234...)" },
-              { rule: !/000|111|222|333|444|555|666|777|888|999/.test(password), label: "No repeated numbers (111, 222...)" },
+              { rule: password.length >= 8, label: t("signin.passwordRules.minLength") },
+              { rule: /[A-Z]/.test(password), label: t("signin.passwordRules.uppercase") },
+              { rule: /[0-9]/.test(password), label: t("signin.passwordRules.number") },
+              { rule: /[@#$%.+\-*/!]/.test(password), label: t("signin.passwordRules.special") },
+              { rule: !/012|123|234|345|456|567|678|789|890/.test(password), label: t("signin.passwordRules.noSequential") },
+              { rule: !/000|111|222|333|444|555|666|777|888|999/.test(password), label: t("signin.passwordRules.noRepeated") },
             ].map((item, i) => (
               <p key={i} style={{
                 fontSize: "12px",
@@ -134,7 +218,7 @@ const SignIn = ({ onLogin }) => {
           <input
             className="auth-input"
             type="password"
-            placeholder="Confirmar contraseña"
+            placeholder={t("signin.confirmPassword")}
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             style={{
@@ -160,12 +244,12 @@ const SignIn = ({ onLogin }) => {
 
         {passwordNoMatch && (
           <p style={{ color: "#ff5f57", fontSize: "12px", textAlign: "left", marginTop: "-8px" }}>
-            Las contraseñas no coinciden
+            {t("signin.passwordsNoMatch")}
           </p>
         )}
         {passwordMatch && (
           <p style={{ color: "#28c840", fontSize: "12px", textAlign: "left", marginTop: "-8px" }}>
-            Las contraseñas coinciden ✓
+            {t("signin.passwordsMatch")}
           </p>
         )}
 
@@ -184,14 +268,33 @@ const SignIn = ({ onLogin }) => {
             cursor: !canSubmit || loading ? "not-allowed" : "pointer",
           }}
         >
-          {loading ? "Creando cuenta..." : "Registrarse"}
+          {loading ? t("signin.submitting") : t("signin.submit")}
         </button>
       </form>
 
+      <div className="social-login">
+        <p>{t("login.orContinueWith")}</p>
+        <div ref={googleButtonRef} className="google-button-container"></div>
+        <button
+          type="button"
+          className="google-button"
+          onClick={handleGoogleSignUp}
+          disabled={!googleLoaded}
+          style={{ opacity: googleLoaded ? 1 : 0.6, cursor: googleLoaded ? "pointer" : "not-allowed" }}
+        >
+          {t("login.google")}
+        </button>
+        {googleError && (
+          <p style={{ color: "var(--danger-a0)", fontSize: "13px", textAlign: "left" }}>
+            ⚠️ {googleError}
+          </p>
+        )}
+      </div>
+
       <div className="auth-footer">
-        <p>¿Ya tienes cuenta?</p>
+        <p>{t("signin.haveAccount")}</p>
         <Link to="/login" className="auth-link-button">
-          Iniciar sesión
+          {t("signin.signIn")}
         </Link>
       </div>
     </div>
