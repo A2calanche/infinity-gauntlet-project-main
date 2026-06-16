@@ -43,6 +43,58 @@ AuthRouter.post("/register", async function (request, response) {
     });
   }
 });
+// GOOGLE OAUTH
+AuthRouter.post("/google", async function (request, response) {
+  try {
+    const { token } = request.body;
+
+    if (!token) {
+      return response.status(400).send({ message: "Missing token" });
+    }
+
+    const { verifyGoogleToken } = await import("../middlewares/googleOAuth.js");
+    const googleUser = await verifyGoogleToken(token);
+
+    let user = await User.findOne({ email: googleUser.email });
+
+    if (!user) {
+      // Crear usuario si no existe
+      user = new User({
+        name: googleUser.name,
+        email: googleUser.email,
+        googleId: googleUser.id,
+        password: "oauth-" + googleUser.id, // contraseña dummy
+      });
+      await user.save();
+    } else if (!user.googleId) {
+      // Si el usuario existe pero no tiene googleId, actualizar
+      user.googleId = googleUser.id;
+      await user.save();
+    }
+
+    const jwtToken = jwt.sign(
+      { id: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    response.send({
+      message: "Google login successful",
+      token: jwtToken,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    response.status(401).send({
+      message: "Google authentication failed",
+      error: error.message,
+    });
+  }
+});
 
 // LOGIN
 AuthRouter.post("/login", async function (request, response) {
