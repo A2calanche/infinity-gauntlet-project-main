@@ -25,6 +25,7 @@
     "footerCtaButton": "Crea tu cuenta gratis"
   },
   "login": {
+    "login":"iniciar sesión",
     "title": "Iniciar Sesión",
     "email": "Correo electrónico",
     "password": "Contraseña",
@@ -33,9 +34,10 @@
     "noAccount": "¿No tenés cuenta?",
     "createAccount": "Crear cuenta",
     "orContinueWith": "También podés iniciar sesión con",
-    "google": "Google"
+    "googleButton": "Iniciar sesión con Google"
   },
   "signin": {
+    "login":"iniciar sesión",
     "title": "Crear Cuenta",
     "name": "Nombre",
     "email": "Correo electrónico",
@@ -45,6 +47,8 @@
     "submitting": "Creando cuenta...",
     "haveAccount": "¿Ya tenés cuenta?",
     "signIn": "Iniciar sesión",
+    "orContinueWith": "También podés continuar con",
+    "googleButton": "Registrarse con Google",
     "passwordRules": {
       "minLength": "Al menos 8 caracteres",
       "uppercase": "Al menos una letra mayúscula",

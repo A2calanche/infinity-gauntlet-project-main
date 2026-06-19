@@ -7,7 +7,7 @@
     "title": "Infinity Gauntlet",
     "subtitle": "A clean, secure, and intuitive task manager built to keep your work organized — wherever you are.",
     "getStarted": "Get Started",
-    "signIn": "Sign In",
+    "signIn": "Sign up",
     "previewTitle": "What's the Plan for Today?",
     "previewTask1": "Finish project proposal",
     "previewTask2": "Review pull requests",
@@ -25,17 +25,19 @@
     "footerCtaButton": "Create your free account"
   },
   "login": {
-    "title": "Sign In",
+    "login": "Login",
+    "title": "Login",
     "email": "Email",
     "password": "Password",
-    "submit": "Sign In",
-    "submitting": "Signing in...",
+    "submit": "Log In",
+    "submitting": "logging in...",
     "noAccount": "Don't have an account?",
     "createAccount": "Create account",
     "orContinueWith": "Or continue with",
-    "google": "Google"
+    "googleButton": "Continue with Google"
   },
   "signin": {
+    "login": "Login",
     "title": "Create Account",
     "name": "Name",
     "email": "Email",
@@ -44,7 +46,9 @@
     "submit": "Sign Up",
     "submitting": "Creating account...",
     "haveAccount": "Already have an account?",
-    "signIn": "Sign in",
+    "signIn": "Sign up",
+    "orContinueWith": "Or continue with",
+    "googleButton": "Register with Google",
     "passwordRules": {
       "minLength": "At least 8 characters",
       "uppercase": "At least one uppercase letter",
