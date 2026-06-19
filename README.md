@@ -187,58 +187,70 @@ The frontend will open at `http://localhost:3000` and the backend API will run o
 
 <h3>📁 Project Structure</h3>
 
-```bash
-infinity-gauntlet/
-├── backend/
-│   ├── src/
-│   │   ├── db/
-│   │   │   └── index.js                 # MongoDB connection
-│   │   ├── models/
-│   │   │   ├── User.js                  # User schema
-│   │   │   └── Todo.js                  # Todo schema
-│   │   ├── middlewares/
-│   │   │   ├── auth.js                  # JWT verification
-│   │   │   └── validator.js             # Request validation
-│   │   ├── routers/
-│   │   │   ├── auth-routers.js          # Login/Register endpoints
-│   │   │   └── to-dos.routers.js        # Todo CRUD endpoints
-│   │   └── index.js                     # Express server setup
-│   ├── .env                             # Environment variables
-│   └── package.json
-│
-├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── Landing.js               # Public landing page
-│   │   │   ├── LogIn.js                 # Login form
-│   │   │   ├── SignIn.js                # Registration form
-│   │   │   ├── TodoList.js              # Main todo list view
-│   │   │   ├── Todo.js                  # Single todo item
-│   │   │   ├── TodoForm.js              # Todo creation form
-│   │   │   └── conection.js             # API service layer
-│   │   ├── context/
-│   │   │   └── LanguageContext.js       # Language/i18n management
-│   │   ├── locales/
-│   │   │   ├── en.json                  # English translations
-│   │   │   ├── es.json                  # Spanish translations
-│   │   │   └── pt.json                  # Portuguese translations
-│   │   ├── App.js                       # Main app with routing
-│   │   ├── App.scss                     # Global styles & themes
-│   │   └── index.js                     # React entry point
-│   ├── public/
-│   │   └── index.html
-│   ├── .env                             # Environment variables
-│   └── package.json
-│
-├── docs/
-│   └── img/
-│       └── fundamentals.png             # Project logo
-├── package.json                         # Root package (concurrently)
-├── .gitignore
-├── LICENSE                              # MIT License
-└── README.md                            # This file
-```
+```mermaid
+flowchart LR
 
+    subgraph Frontend["Frontend (React)"]
+        APP["App.js"]
+        COMP["Components
+        Landing
+        LogIn
+        SignIn
+        TodoList
+        Todo
+        TodoForm"]
+
+        LANG["LanguageContext"]
+        I18N["Locales
+        en.json
+        es.json
+        pt.json"]
+
+        API["services/conection.js"]
+    end
+
+    subgraph Backend["Backend (Node.js + Express)"]
+        SERVER["Express Server
+        index.js"]
+
+        AUTHR["Auth Router
+        login/register"]
+
+        TODOR["Todo Router
+        CRUD Todos"]
+
+        AUTHM["JWT Middleware"]
+        VALID["Validation Middleware"]
+
+        USER["User Model"]
+        TODO["Todo Model"]
+    end
+
+    DB[("MongoDB")]
+
+    APP --> COMP
+    APP --> LANG
+    LANG --> I18N
+
+    COMP --> API
+
+    API -->|HTTP/REST| SERVER
+
+    SERVER --> AUTHR
+    SERVER --> TODOR
+
+    AUTHR --> VALID
+    TODOR --> AUTHM
+    TODOR --> VALID
+
+    AUTHR --> USER
+    TODOR --> TODO
+    TODOR --> USER
+
+    USER --> DB
+    TODO --> DB
+
+```
 <h3>🌍 Multilingual Support</h3>
 
 The app supports three languages:
