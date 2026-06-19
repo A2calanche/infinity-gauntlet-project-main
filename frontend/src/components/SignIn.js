@@ -1,6 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef  } from "react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "../context/LanguageContext";
+import { useGoogleSignInButton } from "../hooks/useGoogleSignInButton";
+
 
 const validatePassword = (password) => {
   const errors = [];
@@ -20,23 +22,23 @@ const validatePassword = (password) => {
 };
 
 const SignIn = ({ onLogin }) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const googleButtonRef = useRef(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordFocused, setPasswordFocused] = useState(false);
   const [error, setError] = useState("");
-  const [googleError, setGoogleError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [googleLoaded, setGoogleLoaded] = useState(false);
-  const googleButtonRef = useRef(null);
 
   const passwordErrors = validatePassword(password);
   const passwordValid = password.length > 0 && passwordErrors.length === 0;
   const passwordMatch = confirmPassword.length > 0 && password === confirmPassword;
   const passwordNoMatch = confirmPassword.length > 0 && password !== confirmPassword;
   const canSubmit = passwordValid && passwordMatch && name && email;
+
+  useGoogleSignInButton(googleButtonRef, language, onLogin, setError);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -60,7 +62,7 @@ const SignIn = ({ onLogin }) => {
         return;
       }
 
-      console.log("Token a guardar:", data.token);
+      //console.log("Token a guardar:", data.token);
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
       onLogin();
@@ -71,86 +73,7 @@ const SignIn = ({ onLogin }) => {
       setLoading(false);
     }
   };
-
-  const handleGoogleResponse = async (response) => {
-    if (!response?.credential) {
-      setGoogleError("Google authentication failed");
-      return;
-    }
-
-    try {
-      const backendResponse = await fetch(`${process.env.REACT_APP_API_URL}/v1/auth/google`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token: response.credential }),
-      });
-
-      const data = await backendResponse.json();
-      if (!backendResponse.ok) {
-        setGoogleError(data.message || "Google signup failed");
-        return;
-      }
-
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-      onLogin();
-    } catch (err) {
-      setGoogleError("Connection error, try again later");
-    }
-  };
-
-  useEffect(() => {
-    const renderGoogleButton = () => {
-      if (!window.google?.accounts?.id || !googleButtonRef.current) return;
-
-      window.google.accounts.id.initialize({
-        client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
-        callback: handleGoogleResponse,
-        ux_mode: "popup",
-      });
-
-      window.google.accounts.id.renderButton(googleButtonRef.current, {
-        theme: "outline",
-        size: "large",
-        text: "signup_with",
-        shape: "rectangular",
-      });
-
-      setGoogleLoaded(true);
-    };
-
-    if (window.google?.accounts?.id) {
-      renderGoogleButton();
-      return;
-    }
-
-    if (document.getElementById("google-client-script")) {
-      const waitForGoogle = setInterval(() => {
-        if (window.google?.accounts?.id) {
-          clearInterval(waitForGoogle);
-          renderGoogleButton();
-        }
-      }, 100);
-      return () => clearInterval(waitForGoogle);
-    }
-
-    const script = document.createElement("script");
-    script.src = "https://accounts.google.com/gsi/client";
-    script.id = "google-client-script";
-    script.async = true;
-    script.defer = true;
-    script.onload = renderGoogleButton;
-    document.body.appendChild(script);
-  }, []);
-
-  const handleGoogleSignUp = () => {
-    if (window.google?.accounts?.id) {
-      window.google.accounts.id.prompt();
-    } else {
-      setGoogleError("Google sign-in is not ready yet");
-    }
-  };
-
+ 
   return (
     <div className="auth-container">
       <h1 className="auth-title">{t("signin.title")}</h1>
@@ -270,31 +193,18 @@ const SignIn = ({ onLogin }) => {
         >
           {loading ? t("signin.submitting") : t("signin.submit")}
         </button>
-      </form>
-
-      <div className="social-login">
-        <p>{t("login.orContinueWith")}</p>
-        <div ref={googleButtonRef} className="google-button-container"></div>
-        <button
-          type="button"
-          className="google-button"
-          onClick={handleGoogleSignUp}
-          disabled={!googleLoaded}
-          style={{ opacity: googleLoaded ? 1 : 0.6, cursor: googleLoaded ? "pointer" : "not-allowed" }}
-        >
-          {t("login.google")}
-        </button>
-        {googleError && (
-          <p style={{ color: "var(--danger-a0)", fontSize: "13px", textAlign: "left" }}>
-            ⚠️ {googleError}
-          </p>
-        )}
+        <div className="divider" style={{ margin: "20px 0", textAlign: "center" }}>
+        <span style={{ color: "var(--text-secondary)" }}>{t("login.orContinueWith") || "or"}</span>
       </div>
+
+      <div ref={googleButtonRef} style={{ display: "flex", justifyContent: "center" }}></div>
+        
+      </form>
 
       <div className="auth-footer">
         <p>{t("signin.haveAccount")}</p>
         <Link to="/login" className="auth-link-button">
-          {t("signin.signIn")}
+          {t("signin.login")}
         </Link>
       </div>
     </div>
