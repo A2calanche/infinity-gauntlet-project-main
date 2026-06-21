@@ -9,12 +9,12 @@
 </p>
 
 <pre>
-⭐ Full-stack productivity app built with the MERN stack (MongoDB, Express, React 18, Node.js)
-   A clean, secure, and intuitive task manager to keep your work organized — wherever you are.
+⭐ Full-stack productivity app built with the MERN stack (MongoDB, Express, React, Node.js)
+   A clean, secure task manager with JWT auth, Google sign-in, multilingual UI, and personal todos.
 </pre>
 
 <img src="https://img.shields.io/badge/-MERN Stack-blue" alt="MERN"/> &nbsp;
-<img src="https://img.shields.io/badge/-MongoDB Atlas-green" alt="MongoDB Atlas"/> &nbsp;
+<img src="https://img.shields.io/badge/-MongoDB-green" alt="MongoDB"/> &nbsp;
 <img src="https://img.shields.io/badge/-JWT Auth-orange" alt="JWT"/> &nbsp;
 <img src="https://img.shields.io/badge/-React Router-61DAFB" alt="React Router"/> &nbsp;
 <img src="https://img.shields.io/badge/-Google OAuth-4285F4" alt="Google OAuth"/> &nbsp;
@@ -25,23 +25,21 @@
 <br/>
 
 <h3>🎯 About</h3>
-
 Infinity Gauntlet is a full-stack productivity application that helps you manage tasks with a Kanban-style interface (Pending → Doing → Done). Each user has their own private, secure workspace with JWT authentication. The app supports multiple languages (English, Spanish, Portuguese) and includes dark/light theme switching.
 
 **Current Features:**
 <pre>
-✅ User registration and login with JWT authentication
-✅ Password strength validation (8+ chars, uppercase, number, special char)
-✅ Kanban-style to-do list (Pending → Doing → Done columns)
-✅ Per-user task isolation and privacy
-✅ Dark/Light theme toggle with persistence
-✅ Multilingual support (English, Spanish, Portuguese)
-✅ Professional landing page with feature showcase
-✅ Responsive design (desktop, tablet, mobile)
-✅ RESTful API architecture
-✅ Password hashing with bcryptjs
-
-🔜 Google OAuth integration
+✅ Email/password registration and login
+✅ Google OAuth sign-in via Google Identity Services
+✅ JWT-based authentication for API requests
+✅ Todo management with description, edit, delete, and complete actions
+✅ Per-user task isolation
+✅ Stored todo statuses: pending / doing / done
+✅ Multilingual UI (English, Spanish, Portuguese)
+✅ Responsive frontend for desktop and mobile
+✅ Dark/light theme toggle with OS preference support
+✅ Secure password hashing with bcryptjs
+✅ Express + MongoDB REST API
 🔜 Telegram bot notifications
 🔜 Google Calendar sync
 🔜 Password recovery via email
@@ -52,31 +50,31 @@ Infinity Gauntlet is a full-stack productivity application that helps you manage
 
 **Frontend**
 <pre>
-- React 18+
+- React 19
 - React Router DOM 7
-- Sass/SCSS (with mixins & variables)
-- Context API (language management)
-- Responsive CSS Grid
-- Dark/Light theme with CSS variables
+- Create React App with react-scripts
+- Sass/SCSS styling
+- Context API for language management
+- Google Identity Services for OAuth sign-in
+- React Icons for UI icons
 </pre>
 
 **Backend**
 <pre>
-- Node.js 18+
-- Express 5
-- MongoDB Atlas + Mongoose 8
+- Node.js + Express 5
+- MongoDB Atlas / Mongoose
 - JWT Authentication
-- bcryptjs (password hashing)
-- CORS
-- Morgan (logging)
-- Nodemon (development)
+- bcryptjs password hashing
+- CORS and Morgan
+- google-auth-library for Google token verification
+- Nodemon for development
 </pre>
 
 <h3>📋 Prerequisites</h3>
 
-- Node.js >= 16
+- Node.js >= 18
 - Yarn or npm
-- MongoDB Atlas account (free tier available)
+- MongoDB Atlas account (free tier available) or MongoDB connection string
 - Git
 
 <h3>🚀 Getting Started</h3>
@@ -84,56 +82,42 @@ Infinity Gauntlet is a full-stack productivity application that helps you manage
 **1. Clone the project**
 
 ```bash
-git clone https://github.com/A2calanche/infinity-gauntlet.git
-cd infinity-gauntlet
+git clone https://github.com/A2calanche/infinity-gauntlet-project-main.git
+cd infinity-gauntlet-project-main
 ```
 
 **2. Install dependencies**
 
-From the root folder:
 ```bash
+# Root dependencies
+cd /workspaces/infinity-gauntlet-project-main
 yarn install
-cd frontend && yarn install
-cd ../backend && yarn install
-cd ..
-```
 
-Or separately:
-```bash
 # Frontend
 cd frontend
 yarn install
 
-# Backend (in another terminal)
-cd backend
+# Backend
+cd ../backend
 yarn install
 ```
 
 **3. Configure environment variables**
 
-#### **Backend (.env file in `backend/` folder):**
+#### Backend (`backend/.env`)
 ```bash
-MONGO_URI=mongodb+srv://user:password@cluster0.xxxxx.mongodb.net/infinity-gauntlet
+MONGO_URI=your-mongodb-connection-string
 PORT=3001
-JWT_SECRET=your-super-secret-random-string-here
-TELEGRAM_BOT_TOKEN=your-telegram-bot-token
-TELEGRAM_CHAT_ID=your-chat-id
-
-# Google OAuth - Get these from Google Cloud Console
+JWT_SECRET=your-super-secret-random-string
 GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
-GOOGLE_CALLBACK_URL=http://localhost:3001/auth/google/callback
-GOOGLE_TOKEN_URI=https://oauth2.googleapis.com/token
 ```
 
-#### **Frontend (.env file in `frontend/` folder):**
+#### Frontend (`frontend/.env`)
 ```bash
 REACT_APP_API_URL=http://localhost:3001
-
-# Google OAuth - Same CLIENT_ID as Backend (must start with REACT_APP_ for Create React App)
 REACT_APP_GOOGLE_CLIENT_ID=your-google-client-id
 ```
-
 #### **Google OAuth Configuration Steps**
 
 1. **Create a Google Cloud Project:**
@@ -164,143 +148,140 @@ REACT_APP_GOOGLE_CLIENT_ID=your-google-client-id
 4. **Add credentials to your .env files:**
    - Paste `Client ID` in both `backend/.env` (as `GOOGLE_CLIENT_ID`) and `frontend/.env` (as `REACT_APP_GOOGLE_CLIENT_ID`)
    - Paste `Client Secret` in `backend/.env` (as `GOOGLE_CLIENT_SECRET`)
+> The app supports email/password auth without Google OAuth. Google sign-in is optional but available in the login and registration pages.
 
 **4. Run the project**
 
-**Option A: Run both from root (recommended)**
+**Option A: Start both from root**
 ```bash
 yarn start
 ```
 
 **Option B: Run separately**
 ```bash
-# Terminal 1 - Backend
+# Backend
 cd backend
 yarn start
 
-# Terminal 2 - Frontend  
+# Frontend
 cd frontend
 yarn start
 ```
 
-The frontend will open at `http://localhost:3000` and the backend API will run on `http://localhost:3001`.
+The frontend runs at `http://localhost:3000` and the backend API runs at `http://localhost:3001`.
 
 <h3>📁 Project Structure</h3>
 
 ```mermaid
-flowchart LR
+flowchart TB
+    classDef folder stroke:#818cf8,fill:#eef2ff,stroke-width:2px
+    classDef file stroke:#38bdf8,fill:#f0f9ff
 
-    subgraph Frontend["Frontend (React)"]
-        APP["App.js"]
-        COMP["Components
-        Landing
-        LogIn
-        SignIn
-        TodoList
-        Todo
-        TodoForm"]
+    FRONTEND["frontend/"]:::folder --> PUBLIC["public/"]:::folder
+    FRONTEND --> SRC["src/"]:::folder
 
-        LANG["LanguageContext"]
-        I18N["Locales
-        en.json
-        es.json
-        pt.json"]
+    SRC --> APP["App.js"]:::file
+    SRC --> APP_SCSS["App.scss"]:::file
+    SRC --> COMPONENTS["components/"]:::folder
+    SRC --> CONTEXT["context/"]:::folder
+    SRC --> HOOKS["hooks/"]:::folder
+    SRC --> LOCALES["locales/"]:::folder
+    SRC --> SERVICES["services/"]:::folder
 
-        API["services/conection.js"]
-    end
+    COMPONENTS --> LANDING["Landing.js"]:::file
+    COMPONENTS --> LOGIN["LogIn.js"]:::file
+    COMPONENTS --> SIGNIN["SignIn.js"]:::file
+    COMPONENTS --> TODO["Todo.js"]:::file
+    COMPONENTS --> TODOFORM["TodoForm.js"]:::file
+    COMPONENTS --> TODOLIST["TodoList.js"]:::file
 
-    subgraph Backend["Backend (Node.js + Express)"]
-        SERVER["Express Server
-        index.js"]
+    CONTEXT --> LANGCTX["LanguageContext.js"]:::file
 
-        AUTHR["Auth Router
-        login/register"]
+    HOOKS --> GBTN["useGoogleSignInButton.js"]:::file
 
-        TODOR["Todo Router
-        CRUD Todos"]
+    LOCALES --> EN["en.json"]:::file
+    LOCALES --> ES["es.json"]:::file
+    LOCALES --> PT["pt.json"]:::file
 
-        AUTHM["JWT Middleware"]
-        VALID["Validation Middleware"]
+    SERVICES --> CONN["conection.js"]:::file
+    BACKEND["backend/"]:::folder --> BSRC["src/"]:::folder
 
-        USER["User Model"]
-        TODO["Todo Model"]
-    end
+    BSRC --> INDEX["index.js"]:::file
+    BSRC --> DBF["db/"]:::folder
+    BSRC --> MIDDLE["middlewares/"]:::folder
+    BSRC --> MODELS["models/"]:::folder
+    BSRC --> ROUTERS["routers/"]:::folder
 
-    DB[("MongoDB")]
+    DBF --> DBINDEX["index.js"]:::file
 
-    APP --> COMP
-    APP --> LANG
-    LANG --> I18N
+    MIDDLE --> AUTH["auth.js"]:::file
+    MIDDLE --> GOOGLE["googleOAuth.js"]:::file
+    MIDDLE --> VALIDATOR["validator.js"]:::file
 
-    COMP --> API
+    MODELS --> TODO_M["Todo.js"]:::file
+    MODELS --> USERS_M["Users.js"]:::file
 
-    API -->|HTTP/REST| SERVER
-
-    SERVER --> AUTHR
-    SERVER --> TODOR
-
-    AUTHR --> VALID
-    TODOR --> AUTHM
-    TODOR --> VALID
-
-    AUTHR --> USER
-    TODOR --> TODO
-    TODOR --> USER
-
-    USER --> DB
-    TODO --> DB
-
+    ROUTERS --> AUTH_R["auth-routers.js"]:::file
+    ROUTERS --> TODOS_R["to-dos.routers.js"]:::file
 ```
+
 <h3>🌍 Multilingual Support</h3>
 
-The app supports three languages:
+The UI supports three languages:
 - **English** (EN) 🇺🇸
 - **Spanish** (ES) 🇲🇽
 - **Portuguese** (PT) 🇧🇷
 
-Switch languages using the selector in the top-right corner. Your preference is saved to localStorage.
+Language selection is available in the top-right selector and is saved to `localStorage`.
 
 <h3>🎨 Themes</h3>
 
-The app includes two beautiful themes:
-- **Dark Theme** (default) — Purple & deep grays
-- **Light Theme** — Blue & soft whites
+The app includes two themes:
+- **Dark Theme** — default based on OS preference
+- **Light Theme** — toggleable by the user
 
-Toggled via the sun/moon icon in the top-right corner. Your preference is saved to localStorage.
+Theme selection is available via the sun/moon button in the top-right.
 
 <h3>🔐 Authentication</h3>
 
 **Registration Flow:**
-1. User creates account with email and password
-2. Password is hashed with bcryptjs (12 rounds)
-3. JWT token issued upon success
-4. Token stored in localStorage
+1. User submits name, email, and password
+2. Password is hashed with bcryptjs before saving
+3. JWT token is created and returned
+4. Token is stored in `localStorage`
 
 **Login Flow:**
-1. User enters email and password
-2. Password compared with hashed version
-3. JWT token issued if valid
-4. Token used for all authenticated requests
+1. User submits email and password
+2. Backend verifies password with bcryptjs
+3. JWT token is created and returned
+4. Token is used for authenticated requests
+
+**Google Login Flow:**
+1. User clicks the Google sign-in button
+2. Frontend sends the credential token to `/v1/auth/google`
+3. Backend verifies the Google token and creates or reuses the user
+4. Backend returns a JWT token for API requests
 
 **JWT Token:**
 - Payload: `{ id, email }`
 - Expiration: 7 days
-- Stored in `Authorization: Bearer {token}` header
+- Sent in `Authorization: Bearer {token}` header
 
 <h3>📝 API Endpoints</h3>
 
 **Authentication**
 ```bash
-POST   /v1/auth/register          # Create new user
-POST   /v1/auth/login             # User login
+POST   /v1/auth/register      # Create new user
+POST   /v1/auth/login         # Email/password login
+POST   /v1/auth/google        # Google OAuth login
 ```
 
 **Todos (requires JWT)**
 ```bash
-GET    /v1/to-dos                 # Get all todos for logged-in user
-POST   /v1/to-dos                 # Create new todo
-PATCH  /v1/to-dos/:id             # Update todo
-DELETE /v1/to-dos/:id             # Delete todo
+GET    /v1/to-dos             # Get todos for current user
+POST   /v1/to-dos             # Create a todo
+PATCH  /v1/to-dos/:id         # Update todo
+DELETE /v1/to-dos/:id         # Delete todo
 ```
 
 <h3>📊 Database Schema</h3>
@@ -309,9 +290,9 @@ DELETE /v1/to-dos/:id             # Delete todo
 ```javascript
 {
   name: String,
-  email: String (unique, lowercase),
-  password: String (hashed),
-  googleId: String (null by default),
+  email: String,
+  password: String,
+  googleId: String,
   timestamps: true
 }
 ```
@@ -319,11 +300,11 @@ DELETE /v1/to-dos/:id             # Delete todo
 **Todo**
 ```javascript
 {
-  userId: ObjectId (ref: User),
+  userId: ObjectId,
   title: String,
   description: String,
-  is_done: Boolean (default: false),
-  status: enum ['pending', 'doing', 'done'] (default: 'pending'),
+  is_done: Boolean,
+  status: String, // pending | doing | done
   timestamps: true
 }
 ```
@@ -331,16 +312,12 @@ DELETE /v1/to-dos/:id             # Delete todo
 <h3>🔄 Latest Updates</h3>
 
 **June 2026**
-- Upgraded React from 17 → 18
-- Migrated to React Router 7 for client-side routing
-- Added professional landing page
-- Implemented multilingual support (EN/ES/PT)
-- Converted CSS to Sass/SCSS with mixins and maps
-- Refactored authentication flow
-- Added password strength validation
-- Improved responsive design
-- Enhanced dark/light theme system
-
+- Added secure JWT authentication and per-user todo storage
+- Added Google OAuth sign-in with backend token verification
+- Added multilingual UI support (EN/ES/PT)
+- Added dark/light theme toggle with OS preference support
+- Added todo descriptions, edit, delete, and complete actions
+- Improved responsive UI and landing page
 **Previous (2025)**
 - Migrated database from SQLite → MongoDB Atlas
 - Added JWT authentication
@@ -356,29 +333,21 @@ DELETE /v1/to-dos/:id             # Delete todo
 
 <h3>🛣️ Roadmap</h3>
 
-- [ ] Google OAuth integration
 - [ ] Telegram bot notifications
 - [ ] Google Calendar sync
-- [ ] Email-based password recovery
+- [ ] Email password recovery
 - [ ] Task reminders & notifications
-- [ ] Task tags/categories
+- [ ] Task tags / categories
 - [ ] Subtasks
 - [ ] Recurring tasks
-- [ ] Task priority levels
-- [ ] Team collaboration features
+- [ ] Priority levels
+- [ ] Team collaboration
 - [ ] Docker containerization
-- [ ] CI/CD pipeline (GitHub Actions)
+- [ ] CI/CD pipeline
 
 <h3>🤝 Contributing</h3>
 
-Contributions are welcome! Feel free to:
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-Please ensure your code follows the existing style and includes proper error handling.
+Contributions are welcome! Please fork the repository, create a branch, and open a pull request.
 
 <h3>📄 License</h3>
 
@@ -388,7 +357,6 @@ This project is licensed under the MIT License — see the LICENSE file for deta
 
 **Arturo Alejandro Calanche Pino**
 - GitHub: [@A2calanche](https://github.com/A2calanche)
-- Location: Manaus, Brazil 🇧🇷
 
 ---
 
