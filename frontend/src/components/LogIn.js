@@ -87,16 +87,16 @@ const LogIn = ({ onLogin }) => {
       <div ref={googleButtonRef} style={{ display: "flex", justifyContent: "center" }}></div>
         
       </form>
-
     <div className="auth-footer">
-      <p>{t("login.noAccount")}</p>
-
+        <Link to="/forgot-password" className="auth-link-button">
+          {t("login.RecoveryPassword")}
+        </Link>
+      <p>{t("login.noAccount")}{" "}
       <Link to="/signin" className="auth-link-button">
         {t("login.createAccount")}
       </Link>
-    </div>
-
-    
+      </p>
+    </div>  
   </div>
 );
 };

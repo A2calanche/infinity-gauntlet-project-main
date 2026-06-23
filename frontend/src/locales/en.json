@@ -34,7 +34,14 @@
     "noAccount": "Don't have an account?",
     "createAccount": "Create account",
     "orContinueWith": "Or continue with",
-    "googleButton": "Continue with Google"
+    "googleButton": "Continue with Google",
+    "RecoveryPassword": "Forgot your password?",
+    "RecoveryPasswordTitle": "Recover your password",
+    "RecoveryPasswordEmail": "Enter your email to receive a password reset link.",
+    "RecoveryPasswordSubmit": "Send reset link",
+    "RecoveryPasswordSubmitting": "Sending reset link...",
+    "RecoveryPasswordSuccess": "If an account with that email exists, a password reset link has been sent. Please check your inbox.",
+    "RecoveryPasswordError": "An error occurred while sending the password reset link. Please try again later."
   },
   "signin": {
     "login": "Login",

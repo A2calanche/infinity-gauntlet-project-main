@@ -4,6 +4,7 @@ import Landing from "./components/Landing";
 import LogIn from "./components/LogIn";
 import SignIn from "./components/SignIn";
 import TodoList from "./components/TodoList";
+import ForgotPassword from "./components/Recovery";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { LanguageProvider, useLanguage } from "./context/LanguageContext";
 
@@ -68,6 +69,14 @@ function App() {
             element={isAuthenticated ? (<Navigate to="/app" replace />) : (
               <div className="todo-app">
                 <SignIn onLogin={() => setIsAuthenticated(true)} />
+              </div>
+            )}
+          />
+          <Route
+            path="/forgot-password"
+            element={isAuthenticated ? (<Navigate to="/app" replace />) : (
+              <div className="todo-app">
+                <ForgotPassword />
               </div>
             )}
           />

@@ -34,7 +34,14 @@
     "noAccount": "¿No tenés cuenta?",
     "createAccount": "Crear cuenta",
     "orContinueWith": "También podés iniciar sesión con",
-    "googleButton": "Iniciar sesión con Google"
+    "googleButton": "Iniciar sesión con Google",
+    "recoverPassword": "¿Olvidaste tu contraseña?",
+    "recoverPasswordTitle": "Recuperar contraseña",
+    "recoverPasswordEmail": "Ingresá tu correo electrónico para recibir un enlace de restablecimiento de contraseña.",
+    "recoverPasswordSubmit": "Enviar enlace de restablecimiento",
+    "recoverPasswordSubmitting": "Enviando enlace de restablecimiento...",
+    "recoverPasswordSuccess": "Si existe una cuenta con ese correo electrónico, se ha enviado un enlace de restablecimiento de contraseña. Por favor, revisá tu bandeja de entrada.",
+    "recoverPasswordError": "Ocurrió un error al enviar el enlace de restablecimiento de contraseña. Por favor, intentá nuevamente más tarde."
   },
   "signin": {
     "login":"iniciar sesión",

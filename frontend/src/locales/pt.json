@@ -34,7 +34,14 @@
     "noAccount": "Não tem uma conta?",
     "createAccount": "Criar conta",
     "orContinueWith": "Ou continue com",
-    "googleButton": "Entrar com Google"
+    "googleButton": "Entrar com Google",
+    "recoverPassword": "Esqueceu sua senha?",
+    "recoverPasswordTitle": "Recuperar senha",
+    "recoverPasswordEmail": "Digite seu e-mail para receber um link de redefinição de senha.",
+    "recoverPasswordSubmit": "Enviar link de redefinição",
+    "recoverPasswordSubmitting": "Enviando link de redefinição...",
+    "recoverPasswordSuccess": "Se existir uma conta com esse e-mail, um link de redefinição de senha foi enviado. Por favor, verifique sua caixa de entrada.",
+    "recoverPasswordError": "Ocorreu um erro ao enviar o link de redefinição de senha. Por favor, tente novamente mais tarde."
   },
   "signin": {
     "login": "Entrar",

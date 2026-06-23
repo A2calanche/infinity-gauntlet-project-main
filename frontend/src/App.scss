@@ -337,6 +337,9 @@ $row-gradients: (
 .auth-footer {
   margin-top: 25px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+   gap: 10px;
 
   p {
     color: var(--text-secondary);
