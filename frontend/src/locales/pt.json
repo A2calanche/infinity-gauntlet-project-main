@@ -36,13 +36,30 @@
     "orContinueWith": "Ou continue com",
     "googleButton": "Entrar com Google",
     "recoverPassword": "Esqueceu sua senha?",
-    "recoverPasswordTitle": "Recuperar senha",
+    "recoverPasswordTitle": "Recuperar senha"
+},
+"recoveryPassword":{
     "recoverPasswordEmail": "Digite seu e-mail para receber um link de redefinição de senha.",
     "recoverPasswordSubmit": "Enviar link de redefinição",
     "recoverPasswordSubmitting": "Enviando link de redefinição...",
     "recoverPasswordSuccess": "Se existir uma conta com esse e-mail, um link de redefinição de senha foi enviado. Por favor, verifique sua caixa de entrada.",
     "recoverPasswordError": "Ocorreu um erro ao enviar o link de redefinição de senha. Por favor, tente novamente mais tarde."
   },
+  "recovery":
+  {
+    "title":"Crie uma nova senha",
+    "passwordLabel": "Nova senha",
+    "confirmLabel": "Confirmar nova senha",
+    "submit": "Salvar nova senha",
+    "submitting": "Salvando...",
+    "success": "Sua senha foi atualizada. Você pode agora fazer login.",
+    "login": "Voltar para o login",
+    "requestNew": "Solicitar um novo link",
+    "tooShort": "Use pelo menos 8 caracteres.",
+    "mismatch": "As senhas não coincidem.",
+    "expired": "Este link é inválido ou expirou.",
+    "generic": "Algo deu errado. Por favor, tente novamente."
+    },
   "signin": {
     "login": "Entrar",
     "title": "Criar Conta",

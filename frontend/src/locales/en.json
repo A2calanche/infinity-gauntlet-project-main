@@ -35,14 +35,32 @@
     "createAccount": "Create account",
     "orContinueWith": "Or continue with",
     "googleButton": "Continue with Google",
-    "RecoveryPassword": "Forgot your password?",
-    "RecoveryPasswordTitle": "Recover your password",
-    "RecoveryPasswordEmail": "Enter your email to receive a password reset link.",
-    "RecoveryPasswordSubmit": "Send reset link",
-    "RecoveryPasswordSubmitting": "Sending reset link...",
-    "RecoveryPasswordSuccess": "If an account with that email exists, a password reset link has been sent. Please check your inbox.",
-    "RecoveryPasswordError": "An error occurred while sending the password reset link. Please try again later."
+    "RecoveryPassword": "Forgot your password?"
+    
+},
+"forgot":{
+    "title": "Recover your password",
+    "email": "Enter your email to receive a password reset link.",
+    "submit": "Send reset link",
+    "submitting": "Sending reset link...",
+    "success": "If an account with that email exists, a password reset link has been sent. Please check your inbox.",
+    "error": "An error occurred while sending the password reset link. Please try again later."
   },
+  "recovery":
+  {
+    "title":"Set a new password",
+    "passwordLabel": "New password",
+    "confirmLabel": "Confirm new password",
+    "submit": "Save new password",
+    "submitting": "Saving...",
+    "success": "Your password was updated. You can now log in.",
+    "login": "Go back to login",
+    "requestNew": "Request a new link",
+    "tooShort": "Use at least 8 characters.",
+    "mismatch": "Passwords don't match.",
+    "expired": "This link is invalid or has expired.",
+    "generic": "Something went wrong. Please try again."
+    },
   "signin": {
     "login": "Login",
     "title": "Create Account",

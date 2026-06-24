@@ -5,6 +5,7 @@ import LogIn from "./components/LogIn";
 import SignIn from "./components/SignIn";
 import TodoList from "./components/TodoList";
 import ForgotPassword from "./components/Recovery";
+import RecoveryPassword from "./components/RecoveryPassword";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { LanguageProvider, useLanguage } from "./context/LanguageContext";
 
@@ -77,6 +78,14 @@ function App() {
             element={isAuthenticated ? (<Navigate to="/app" replace />) : (
               <div className="todo-app">
                 <ForgotPassword />
+              </div>
+            )}
+          />
+          <Route
+            path="/Reset-password/:token"
+            element={isAuthenticated ? (<Navigate to="/app" replace />) : (
+              <div className="todo-app">
+                <RecoveryPassword />
               </div>
             )}
           />

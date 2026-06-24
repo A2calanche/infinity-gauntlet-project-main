@@ -299,6 +299,11 @@ $row-gradients: (
   margin: 20px 0;
 }
 
+.auth-subtitle {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    margin: 0 0 24px;
+}
 .auth-form {
   display: flex;
   flex-direction: column;
