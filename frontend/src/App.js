@@ -91,7 +91,7 @@ function App() {
           />
           <Route
             path="/app"
-          element={isAuthenticated ? (<div className="todo-app">
+          element={isAuthenticated ? (<div className="todo-app kanban-app">
             <TodoList onLogout={handleLogout} />
               </div>) : (<Navigate to="/login" replace />)
           }
