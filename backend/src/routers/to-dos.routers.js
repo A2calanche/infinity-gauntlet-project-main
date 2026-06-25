@@ -24,10 +24,15 @@ TodosRouter.get("/to-dos", authMiddleware, async function (request, response) {
 TodosRouter.post("/to-dos", validator, authMiddleware, async function (request, response) {
       try {
 
-        const { title, description, is_done, status } = request.body;
-        const todo = new Todo({title, description,  is_done: is_done || false, status: status || "pending",   userId: request.user.id,});
+        const { title, description, status } = request.body;
+        const todo = new Todo({
+          title, 
+          description,  
+          status: status || "pending",   
+          userId: request.user.id,
+        });
         const savedTodo = await todo.save();
-            response.status(201).send({ id: savedTodo._id });
+            response.status(201).send({ id: savedTodo.id });
               }
       catch (error) {
         console.error(error);
@@ -42,22 +47,18 @@ TodosRouter.post("/to-dos", validator, authMiddleware, async function (request, 
 TodosRouter.patch("/to-dos/:id", authMiddleware, async function (request, response) {
   try {
     const { id } = request.params;
-
-    const todo = await Todo.findOne({ _id: id, userId: request.user.id });
-
+    const todo = await Todo.findOne({_id: id, userId: request.user.id });
     if (!todo) {
       return response.status(404).send({ message: "Todo not found" });
     }
-
-    const { title, description, is_done, status } = request.body;
+    const { title, description, status } = request.body;
 
     const updatedTodo = await Todo.findByIdAndUpdate(
       id,
       {
         title: title || todo.title,
         description: description || todo.description,
-        is_done: is_done !== undefined ? is_done : todo.is_done,
-        status: status || todo.status,
+        status: status || todo.status
       },
       { returnDocument: 'after'}
     );
@@ -69,7 +70,7 @@ TodosRouter.patch("/to-dos/:id", authMiddleware, async function (request, respon
       error,
     });
   }
-});
+}); 
 
 //DELETE
 TodosRouter.delete("/to-dos/:id", authMiddleware, async function (request, response) {

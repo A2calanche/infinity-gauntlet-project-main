@@ -17,10 +17,6 @@ const todoSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    is_done: {
-      type: Boolean,
-      default: false,
-    },
     status: {
       type: String,
       enum: ["pending", "doing", "done"],
