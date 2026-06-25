@@ -35,15 +35,16 @@
     "createAccount": "Criar conta",
     "orContinueWith": "Ou continue com",
     "googleButton": "Entrar com Google",
-    "recoverPassword": "Esqueceu sua senha?",
-    "recoverPasswordTitle": "Recuperar senha"
-},
-"recoveryPassword":{
-    "recoverPasswordEmail": "Digite seu e-mail para receber um link de redefinição de senha.",
-    "recoverPasswordSubmit": "Enviar link de redefinição",
-    "recoverPasswordSubmitting": "Enviando link de redefinição...",
-    "recoverPasswordSuccess": "Se existir uma conta com esse e-mail, um link de redefinição de senha foi enviado. Por favor, verifique sua caixa de entrada.",
-    "recoverPasswordError": "Ocorreu um erro ao enviar o link de redefinição de senha. Por favor, tente novamente mais tarde."
+    "RecoverPassword": "Esqueceu sua senha?"
+ 
+ },
+  "forgot": {
+    "title": "Recupera tua senha",
+    "email": "Introduce teu email para recibir o link para recuperar tua senha.",
+    "submit": "Enviar link de restabelecimiento",
+    "submitting": "Enviando link...",
+    "success": "Se existe uma conta com esse email, um link para recuperar a senha foi enviado. Por favor, verifique sua caixa de entrada.",
+    "error": "Ocorreu um erro ao enviar o link de recuperação de senha. Por favor, tente novamente mais tarde."
   },
   "recovery":
   {
@@ -87,8 +88,22 @@
   "todo": {
     "title": "Qual é o plano de hoje?",
     "logout": "Sair",
-    "placeholder": "Adicionar uma nova tarefa...",
-    "descriptionPlaceholder": "Adicionar uma descrição...",
-    "addButton": "Adicionar"
+    "addButton": "Adicionar",
+    "placeholder": "Título da nova tarefa",
+    "descriptionPlaceholder": "Descrição da nova tarefa",
+    "pending": "Pendente",
+    "doing": "En andamento",
+    "done": "Completo",
+    "empty": "No há tarefas aquí",
+    "add": "Nova tarefa",
+    "createdAt": "Criado em",
+    "delete": "Excluir",
+    "edit": "Editar tarefa",
+    "new": "Nova tarefa",
+    "titleLabel": "Título",
+    "descriptionLabel": "Descrição",
+    "cancel": "Cancelar",
+    "save": "Salvar cambios"
+
   }
 }

@@ -88,8 +88,21 @@
   "todo": {
     "title": "What's the Plan for Today?",
     "logout": "Logout",
-    "placeholder": "Add a new task...",
-    "descriptionPlaceholder": "Add a description...",
-    "addButton": "Add"
+    "placeholder": "New task title",
+    "descriptionPlaceholder": "New task description",
+    "addButton": "Add",
+    "pending": "Pending",
+    "doing": "Doing",
+    "done": "Done",
+    "empty": "No tasks here",
+    "add": "New Task",
+    "createdAt": "Created on",
+    "delete": "Delete",
+    "edit": "Edit Task",
+    "new": "New Task",
+    "titleLabel": "Title",
+    "descriptionLabel": "Description",
+    "cancel": "Cancel",
+    "save": "Save changes"
   }
 }

@@ -35,30 +35,29 @@
     "createAccount": "Crear cuenta",
     "orContinueWith": "También podés iniciar sesión con",
     "googleButton": "Iniciar sesión con Google",
-    "recoverPassword": "¿Olvidaste tu contraseña?"
-},
-"recoveryPassword":{
-    "recoverPasswordTitle": "Recuperar contraseña",
-    "recoverPasswordEmail": "Ingresá tu correo electrónico para recibir un enlace de restablecimiento de contraseña.",
-    "recoverPasswordSubmit": "Enviar enlace de restablecimiento",
-    "recoverPasswordSubmitting": "Enviando enlace de restablecimiento...",
-    "recoverPasswordSuccess": "Si existe una cuenta con ese correo electrónico, se ha enviado un enlace de restablecimiento de contraseña. Por favor, revisá tu bandeja de entrada.",
-    "recoverPasswordError": "Ocurrió un error al enviar el enlace de restablecimiento de contraseña. Por favor, intentá nuevamente más tarde."
+    "RecoveryPassword": "¿Olvidaste tu contraseña?"
   },
- "recovery":
-  {
-    "title":"Establece una nueva contraseña",
+  "forgot": {
+    "title": "Recupera tu contraseña",
+    "email": "Introduce tu correo electrónico para recibir un enlace de restablecimiento de contraseña.",
+    "submit": "Enviar enlace de restablecimiento",
+    "submitting": "Enviando enlace de restablecimiento...",
+    "success": "Si existe una cuenta con ese correo electrónico, se ha enviado un enlace de restablecimiento de contraseña. Por favor, revisa tu bandeja de entrada.",
+    "error": "Ocurrió un error al enviar el enlace de restablecimiento de contraseña. Por favor, inténtalo de nuevo más tarde."
+  },
+  "recovery": {
+    "title":"Establecer una nueva contraseña",
     "passwordLabel": "Nueva contraseña",
-    "confirmLabel": "Confirma nueva contraseña",
-    "submit": "Cambiar contraseña",
+    "confirmLabel": "Confirmar nueva contraseña",
+    "submit": "Guardar nueva contraseña",
     "submitting": "Guardando...",
-    "success": "Tu contraseña ha sido actualizada, ahora puedes iniciar sesión.",
-    "login": "Volver a inicar sesión",
-    "requestNew": "Solicita un nuevo enlace",
-    "tooShort": "Utiliza al menos 8 caracteres.",
-    "mismatch": "Las contraseñas no coinciden",
-    "expired": "Este enlace ha expirado o es inválido.",
-    "generic": "Algo ha salido mal, por favor intentalo de nuevo en unos minutos."
+    "success": "Tu contraseña fue actualizada. Ahora puedes iniciar sesión.",
+    "login": "Volver al inicio de sesión",
+    "requestNew": "Solicitar un nuevo enlace",
+    "tooShort": "Usa al menos 8 caracteres.",
+    "mismatch": "Las contraseñas no coinciden.",
+    "expired": "Este enlace es inválido o ha expirado.",
+    "generic": "Algo salió mal. Por favor, inténtalo de nuevo."
     },
   "signin": {
     "login":"iniciar sesión",
@@ -87,8 +86,21 @@
   "todo": {
     "title": "¿Cuál es el plan para hoy?",
     "logout": "Cerrar sesión",
-    "placeholder": "Agregar una nueva tarea...",
-    "descriptionPlaceholder": "Agregar una descripción...",
-    "addButton": "Agregar"
+    "addButton": "Agregar",  
+    "placeholder": "Título de la nueva tarea",
+    "descriptionPlaceholder": "Descripción de la nueva tarea",
+    "pending": "Pendiente",
+    "doing": "En curso",
+    "done": "Completo",
+    "empty": "No hay tareas aquí",
+    "add": "Nueva tarea",
+    "createdAt": "Creado el",
+    "delete": "Eliminar",
+    "edit": "Editar tarea",
+    "new": "Nueva tarea",
+    "titleLabel": "Título",
+    "descriptionLabel": "Descripción",
+    "cancel": "Cancelar",
+    "save": "Guardar cambios"
   }
 }
