@@ -55,7 +55,7 @@ function TodoForm(props) {
             className="todo-input edit todo-description"
           />
           <textarea
-            placeholder={t("todo.descriptionLabel")}
+            placeholder={t("todo.descriptionPlaceholder")}
             value={description}
             onChange={handleDescriptionChange}
             name="description"
@@ -69,7 +69,7 @@ function TodoForm(props) {
       ) : (
         <>
           <input
-            placeholder={t("todo.add")}
+            placeholder={t("todo.placeholder")}
             value={input}
             onChange={handleChange}
             name="text"
@@ -84,7 +84,7 @@ function TodoForm(props) {
           </button>
           {showDescription && (
             <textarea
-              placeholder={t("todo.descriptionLabel")}
+              placeholder={t("todo.descriptionPlaceholder")}
               value={description}
               onChange={handleDescriptionChange}
               name="description"
