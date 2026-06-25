@@ -1,111 +1,91 @@
-import React, { useState } from "react";
-import TodoForm from "./TodoForm";
-import Todo from "./Todo";
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useLanguage } from "../context/LanguageContext";
-import {llamarLista, createTodo, actualizar, eliminar, } from "../services/conection";
+import { llamarLista, createTodo, actualizar, eliminar } from "../services/conection";
+import KanbanBoard from "./kanban/kanbanBoard";
+import TodoModal from "./kanban/todoModal";
 
 //Crear To Do list
-function TodoList({ onLogout }) {
+const TodoList = ({ onLogout }) => {
   const { t } = useLanguage();
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos]         = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [editTodo, setEditTodo]   = useState(null);
+
   useEffect(() => {
-    llamarLista().then((data) => {
-    if (data && data.todos) setTodos(data.todos);
+  llamarLista().then((data) => {
+    if (data && data.todos) {
+      setTodos(data.todos.map((t) => ({ ...t, id: t._id || t.id })));
+    }
   });
 }, []);
-  
-  //Añadir elementos al To Do List
-  const addTodo = async  (todo) => {
-   
-    if (!todo.text || /^\s*$/.test(todo.text)) {
-      return ;
-    }
-    const todoId = await createTodo(todo);
-    todo.id = todoId.id || todoId._id;
- //   console.log(todo)
-    const newTodos = [todo, ...todos];
-
-    setTodos(newTodos);
-    console.log(...todos);
+//Añadir elementos al To Do List
+  const addTodo = async (todo) => {
+    const saved = await createTodo(todo);
+    const newTodo = { ...todo, id: saved.id };
+    setTodos((prev) => [newTodo, ...prev]);
+    setShowModal(false);
   };
 
-  //Mostrat la descripción
-  const showDescription = (todoId) => {
-    let updatedTodos = todos.map((todo) => {
-      if (todo.id === todoId) {
-        todo.showDescription = !todo.showDescription;
-      }
-      return todo;
-    });
-    setTodos(updatedTodos);
+  //Actualizar elementos del To Do List
+  const updateTodo = async (id, updated) => {
+    await actualizar(id, updated);
+    setTodos((prev) => prev.map((t) => t.id === id ? { ...t, ...updated } : t));
+    setEditTodo(null);
   };
 
-  //Actualizar Elementos en el To Do List
-  const updateTodo = (todoId, newValue) => {
-   
-    if (!newValue.text || /^\s*$/.test(newValue.text)) {
-      return;
-    }
-    newValue.id = todoId;
-  setTodos((prev) =>
-    prev.map((item) => (item.id === todoId ? newValue : item))
-  );
-    actualizar(todoId,newValue)
-      console.log(newValue)
+  const moveStatus = async (id, newStatus) => {
+    await actualizar(id, { status: newStatus });
+    setTodos((prev) => prev.map((t) => t.id === id ? { ...t, status: newStatus } : t));
   };
 
-//Marcar como "Done"
-const completeTodo = (id) => {
-
-  let updatedTodos = todos.map((todo) => {
-    if (todo.id === id) {
-      todo.is_done = !todo.is_done;
-    }
-    actualizar(id,todo)
-    return todo;
-    
-  });
-  setTodos(updatedTodos);
-
-  console.log(todos)
-};
-  //Eliminar Elementos del To Do List
-  const removeTodo = (id) => {
-    eliminar(id);
-    const removedArr = [...todos].filter((todo) => todo.id !== id);
-
-    setTodos(removedArr);
+  //Eliminar elementos del To Do List
+  const removeTodo = async (id) => {
+    await eliminar(id);
+    setTodos((prev) => prev.filter((t) => t.id !== id));
   };
-  
+
+  const pending = todos.filter((t) => t.status === "pending");
+  const doing   = todos.filter((t) => t.status === "doing");
+  const done    = todos.filter((t) => t.status === "done");
+
   return (
-  <>
-    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-      <h1>{t("todo.title")}</h1>
-      <button
-        onClick={onLogout}
-        style={{
-          background: "transparent",
-          border: "1px solid var(--danger-a0)",
-          borderRadius: "8px",
-          padding: "6px 14px",
-          color: "var(--danger-a0)",
-          cursor: "pointer",
-          fontSize: "13px",
-        }}
-      >
-        {t("todo.logout")}
-      </button>
+    <div className="kanban-wrapper">
+      <div className="kanban-header">
+        <h1>{t("todo.title")}</h1>
+        <div className="kanban-header__actions">
+          <button className="kanban-add-btn" onClick={() => setShowModal(true)}>
+            + {t("todo.add")}
+          </button>
+          <button className="kanban-logout-btn" onClick={onLogout}>
+            {t("todo.logout")}
+          </button>
+        </div>
+      </div>
+
+      <KanbanBoard
+        pending={pending}
+        doing={doing}
+        done={done}
+        onMove={moveStatus}
+        onEdit={(todo) => setEditTodo(todo)}
+        onDelete={removeTodo}
+      />
+
+      {(showModal || editTodo) && (
+        <TodoModal
+          todo={editTodo}
+          onSubmit={editTodo
+            ? (data) => updateTodo(editTodo.id, data)
+            : addTodo
+          }
+          onClose={() => {
+            setShowModal(false);
+            setEditTodo(null);
+          }}
+        />
+      )}
     </div>
-    <TodoForm onSubmit={addTodo} />
-    <Todo
-      todos={todos}
-      completeTodo={completeTodo}
-      removeTodo={removeTodo}
-      updateTodo={updateTodo}
-      showDescription={showDescription}
-    />
-  </>
-);
-}
+  );
+};
+
 export default TodoList;
