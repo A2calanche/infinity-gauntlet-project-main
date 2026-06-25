@@ -29,7 +29,7 @@ function TodoForm(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if(!input||!description){
-      alert(t("todo.placeholder"));
+      alert(t("todo.add"));
       return;
     }
     props.onSubmit({
@@ -47,7 +47,7 @@ function TodoForm(props) {
       {props.edit ? (
         <div className="todo-form--update">
           <input
-            placeholder={t("todo.placeholder")}
+            placeholder={t("todo.add")}
             value={input}
             onChange={handleChange}
             name="text"
@@ -55,7 +55,7 @@ function TodoForm(props) {
             className="todo-input edit todo-description"
           />
           <textarea
-            placeholder={t("todo.descriptionPlaceholder")}
+            placeholder={t("todo.descriptionLabel")}
             value={description}
             onChange={handleDescriptionChange}
             name="description"
@@ -69,7 +69,7 @@ function TodoForm(props) {
       ) : (
         <>
           <input
-            placeholder={t("todo.placeholder")}
+            placeholder={t("todo.add")}
             value={input}
             onChange={handleChange}
             name="text"
@@ -84,7 +84,7 @@ function TodoForm(props) {
           </button>
           {showDescription && (
             <textarea
-              placeholder={t("todo.descriptionPlaceholder")}
+              placeholder={t("todo.descriptionLabel")}
               value={description}
               onChange={handleDescriptionChange}
               name="description"
