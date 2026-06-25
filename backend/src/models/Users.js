@@ -32,6 +32,14 @@ const userSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
+    googleAccessToken: {
+      type: String,
+      default: null,
+    },
+    googleRefreshToken: {
+      type: String,
+      default: null,
+    },
   },
   {
     timestamps: true,

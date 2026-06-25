@@ -22,6 +22,14 @@ const todoSchema = new mongoose.Schema(
       enum: ["pending", "doing", "done"],
       default: "pending",
     },
+    calendarEventId: { 
+      type: String, 
+      default: null 
+    },
+    calendarSynced:  { 
+      type: Boolean, 
+      default: false 
+    },
   },
   {
     timestamps: true,
