@@ -28,9 +28,9 @@ export const createTodo = async (todo) => {
         method: 'POST',
         headers: getHeaders(),
         body: JSON.stringify({
-          title: todo.text,
+          title: todo.title,
           description: todo.description,
-          is_done:todo.is_done
+          status: todo.status || "pending",
         })
       });
             const data = await response.json();
@@ -48,9 +48,9 @@ export const createTodo = async (todo) => {
         method: 'PATCH',
         headers: getHeaders(),
         body: JSON.stringify({
-          title: updatedTodo.text,
+          title: updatedTodo.title,
           description: updatedTodo.description,
-          is_done: updatedTodo.is_done
+          status: updatedTodo.status,
       })
       });
       const datos = await respuesta.json();
