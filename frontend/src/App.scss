@@ -66,6 +66,9 @@ $light-theme: (
   @include theme-vars($light-theme);
 }
 
+@mixin gradient-button($from, $to) {
+  background: linear-gradient(90deg, var($from) 0%, var($to) 100%);
+}
 // ===========================
 // BASE
 // ===========================
@@ -167,125 +170,334 @@ h1 {
 }
 
 // ===========================
-// TODO
+// KANBAN
 // ===========================
-.complete {
-  text-decoration: line-through;
-  opacity: 0.4;
+.kanban-app {
+  width: 95%;
+  max-width: 1200px;
+  padding: 0 32px 32px;
 }
 
-.todo-form {
+.kanban-wrapper {
   width: 100%;
-  margin-bottom: 32px;
+  padding: 24px 0;
 }
 
-.todo-input {
-  padding: 14px 32px 14px 16px;
-  border-radius: 4px;
-  border: 2px solid var(--input-border);
-  outline: none;
-  width: 70%;
-  background: var(--input-bg);
-  color: var(--text-primary);
-
-  &::placeholder {
-    color: var(--text-muted);
-  }
-
-  &.edit {
-    border: 2px solid var(--info-a0);
-  }
-}
-
-.todo-description {
-  margin-top: 10px;
-  width: 100%;
-  min-width: 100%;
-  max-width: 100%;
-  min-height: 50px;
-}
-
-@mixin gradient-button($from, $to) {
-  background: linear-gradient(90deg, var($from) 0%, var($to) 100%);
-}
-
-.todo-button {
-  height: fit-content;
-  width: fit-content;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  outline: none;
-  margin: 0 2px;
-  padding: 16px 22px;
-  @include gradient-button(--primary-a0, --primary-a20);
-  color: #fff;
-  text-transform: capitalize;
-
-  &.edit {
-    @include gradient-button(--info-a0, --info-a10);
-  }
-}
-
-.todo-container {
+.kanban-header {
   display: flex;
-  flex-direction: row;
-  position: relative;
-}
-
-.todo-row {
   justify-content: space-between;
   align-items: center;
-  margin: 4px auto;
-  color: #fff;
-  padding: 16px;
-  border-radius: 5px;
-  width: 100%;
-}
+  margin-bottom: 24px;
 
-// Genera los 4 gradientes alternados con un loop
-$row-gradients: (
-  1: (--primary-a0, --primary-a20),
-  2: (--primary-a10, --primary-a30),
-  3: (--info-a0, --info-a10),
-  4: (--primary-a20, --primary-a40),
-);
+  h1 {
+    margin: 0;
+    font-size: 1.4rem;
+    text-align: left;
+    flex: 1;    
+  }
 
-@each $n, $colors in $row-gradients {
-  .todo-row:nth-child(4n + #{$n}) {
-    @include gradient-button(nth($colors, 1), nth($colors, 2));
+  &__actions {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0; 
   }
 }
 
-.icons {
+.kanban-add-btn {
+  background: linear-gradient(90deg, var(--primary-a0) 0%, var(--primary-a20) 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.9rem;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.kanban-logout-btn {
+  background: transparent;
+  border: 1px solid var(--danger-a0);
+  border-radius: 8px;
+  padding: 8px 16px;
+  color: var(--danger-a0);
+  cursor: pointer;
+  font-size: 0.9rem;
+
+  &:hover {
+    background: var(--danger-a0);
+    color: #fff;
+  }
+}
+
+// ===========================
+// KANBAN BOARD
+// ===========================
+.kanban-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+// ===========================
+// KANBAN COLUMN
+// ===========================
+.kanban-column {
+  background: var(--surface-tonal-a0);
+  border-radius: 12px;
+  padding: 16px;
+  min-height: 200px;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+
+    h2 {
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      margin: 0;
+    }
+  }
+
+  &__count {
+    background: var(--surface-a20);
+    color: var(--text-muted);
+    border-radius: 20px;
+    padding: 2px 10px;
+    font-size: 0.8rem;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__empty {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    text-align: center;
+    padding: 24px 0;
+  }
+}
+// ===========================
+// KANBAN DETAIL MODAL
+// ===========================
+.todo-detail {
+  max-width: 480px;
+
+  &__status {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  &__description {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 16px 0;
+    font-size: 0.95rem;
+  }
+
+  &__date {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+}
+// ===========================
+// KANBAN CARD
+// ===========================
+.kanban-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--surface-a20);
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  &__title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    cursor: pointer;
+    margin: 0;
+    flex: 1;
+
+    &:hover {
+      color: var(--primary-a10);
+    }
+  }
+
+  &__icons {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  &__description {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin: 10px 0;
+    line-height: 1.5;
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  &__btn {
+    flex: 1;
+    padding: 5px 8px;
+    border-radius: 6px;
+    border: 1px solid var(--surface-a30);
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 0.78rem;
+    cursor: pointer;
+
+    &:hover {
+      background: var(--surface-tonal-a10);
+      color: var(--text-primary);
+    }
+
+    &--next {
+      border-color: var(--primary-a0);
+      color: var(--primary-a10);
+
+      &:hover {
+        background: var(--primary-a0);
+        color: #fff;
+      }
+    }
+  }
+}
+
+.kanban-icon {
+  font-size: 18px;
+  cursor: pointer;
+  color: var(--text-muted);
+
+  &:hover {
+    &--edit { color: var(--info-a0); }
+    &--delete { color: var(--danger-a0); }
+  }
+
+  &--edit:hover { color: var(--info-a0); }
+  &--delete:hover { color: var(--danger-a0); }
+}
+
+// ===========================
+// MODAL
+// ===========================
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
-  font-size: 24px;
-  cursor: pointer;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
 }
 
-.delete-icon,
-.edit-icon {
-  color: #fff;
-}
-
-.delete-icon {
-  margin-right: 5px;
-}
-
-.done {
-  text-decoration: line-through;
-}
-
-.todo {
+.modal-card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 28px 24px;
   width: 100%;
-  text-align: left;
+  max-width: 440px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--surface-a20);
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    h2 {
+      margin: 0;
+      font-size: 1.2rem;
+      color: var(--text-primary);
+    }
+  }
+
+  &__close {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--text-primary);
+    }
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: -4px;
+    }
+  }
+
+  &__textarea {
+    resize: vertical;
+    min-height: 100px;
+    font-family: inherit;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 8px;
+  }
 }
 
-.description {
-  display: flex;
-}
+// ===========================
+// KANBAN RESPONSIVE
+// ===========================
+@media (max-width: 768px) {
+  .kanban-board {
+    grid-template-columns: 1fr;
+  }
 
+  .todo-app {
+    width: 95%;
+    padding: 0 16px 24px;
+  }
+}
 // ===========================
 // AUTH
 // ===========================
