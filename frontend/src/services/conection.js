@@ -5,15 +5,15 @@ const getHeaders = () => ({
   Authorization: `Bearer ${localStorage.getItem("token")}`,
 });
 
-
+//CRUD GENERAL DE LOS TO-DO'S
 //GET
 export const llamarLista = async () =>{
    try{
-    const respuesta = await fetch(`${API_URL}/v1/to-dos`, {
+    const res = await fetch(`${API_URL}/v1/to-dos`, {
       headers: getHeaders(),
     });
-    console.log(respuesta.status);
-    const data = await respuesta.json();
+    console.log(res.status);
+    const data = await res.json();
     return data;
   } catch (error) {
     console.error(error);
@@ -21,10 +21,9 @@ export const llamarLista = async () =>{
 };
 
 //POST
-  
 export const createTodo = async (todo) => {
     try {
-      const response = await fetch(`${API_URL}/v1/to-dos`, {
+      const res = await fetch(`${API_URL}/v1/to-dos`, {
         method: 'POST',
         headers: getHeaders(),
         body: JSON.stringify({
@@ -33,18 +32,15 @@ export const createTodo = async (todo) => {
           status: todo.status || "pending",
         })
       });
-            const data = await response.json();
-      
-     
-      return data;
-    } catch (error) {
+       return await res.json();
+      } catch (error) {
       console.error(error);
     }
   };
-  //PATCH(description)
+//PATCH(description)
   export const actualizar = async (id, updatedTodo) => {
     try {
-      const respuesta = await fetch(`${API_URL}/v1/to-dos/${id}`, {
+      const res = await fetch(`${API_URL}/v1/to-dos/${id}`, {
         method: 'PATCH',
         headers: getHeaders(),
         body: JSON.stringify({
@@ -53,25 +49,82 @@ export const createTodo = async (todo) => {
           status: updatedTodo.status,
       })
       });
-      const datos = await respuesta.json();
-      return datos;
+      return await res.json();
     } catch (error) {
       console.log(error);
     }
   };
-  
-
-  
-  //DELETE
+//DELETE
   export const eliminar = async(id)=>{
     try{
-      const respuesta = await fetch(`${API_URL}/v1/to-dos/${id}`,{
+      const res = await fetch(`${API_URL}/v1/to-dos/${id}`,{
         method : 'DELETE',
         headers:getHeaders(),
       });
-      return respuesta.status;
+      return res.status;
     } catch (error) {
       console.log(error);
     }
   }
-  
+//CRUD DE CALENDARIO
+
+//GET status
+export const getCalendarStatus = async () => {
+  try {
+    const res = await fetch(`${API_URL}/v1/calendar/status`, {
+      headers: getHeaders(),
+    });
+    return await res.json();
+  }catch (error) {
+    console.error(error);
+  }
+};
+//GET calendar Auth
+export const getCalendaraAuthUrl = async () => {
+  try {
+    const res = await fetch(`${API_URL}/v1/calendar/auth`, {
+      headers:getHeaders(),    
+    });
+    return await res.json();
+  }catch (error){
+    console.error(error);
+  }
+};
+//POST calendar event
+export const createCalendarEvent = async (todoId, startDateTime, endDateTime) => {
+  try {
+    const res = await fetch (`${API_URL}/v1/calendar/event`, {
+      method: 'POST',
+      headers: getHeaders(),
+      body: JSON.stringify({todoId, startDateTime, endDateTime}),
+    });
+    return await res.json();
+  } catch (error) {
+    console.error(error);
+  }
+};
+//PATCH calendar event
+export const updateCalendarEvent = async (todoId, startDateTime, endDateTime) => {
+  try{
+    const res = await fetch(`${API_URL}/v1/calendar/event${todoId}`, {
+      method: 'PATCH',
+      headers: getHeaders(),
+      body: JSON.stringify({startDateTime, endDateTime}),
+    });
+    return await res.json();
+  } catch (error){
+    console.error(error);
+  }
+};
+//DELETE calendar event
+export const deleteCalendarEvent = async (todoId) => {
+  try{
+    const res = await fetch(`${API_URL}/v1/calendar/event/${todoId}`, {
+      method: 'DELETE',
+      headers: getHeaders(),
+    });
+    return res.status;
+  } catch (error){
+    console.error(error);
+  }
+};
