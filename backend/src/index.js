@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import { connectDB } from "./db/index.js";
 import { TodosRouter } from "./routers/to-dos.routers.js";
 import { AuthRouter } from "./routers/auth-routers.js";
+import { CalendarRouter } from "./routers/calendar-routers.js";
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ api.use(cors({
   credentials: true,
 }));
 
+
 api.use(express.json());
 api.use(express.urlencoded({ extended: false }));
 api.use(morgan("dev"));
@@ -32,6 +34,7 @@ api.use((req, res, next) => {
 
 api.use("/v1", TodosRouter);
 api.use("/v1/auth", AuthRouter);
+api.use("/v1/calendar", CalendarRouter);
 
 connectDB().then(() => {
   api.listen(apiPort, () => {
