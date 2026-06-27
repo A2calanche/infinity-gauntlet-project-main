@@ -2,7 +2,7 @@ import React from "react";
 import KanbanCard from "./kanbanCard";
 import { useLanguage } from "../../context/LanguageContext.js";
 
-const KanbanColumn = ({ label, todos, prev, next, onMove, onEdit, onDelete }) => {
+const KanbanColumn = ({ label, todos, prev, next, onMove, onEdit, onDelete, onTodoUpdate }) => {
   const { t } = useLanguage();
 
   return (
@@ -25,6 +25,7 @@ const KanbanColumn = ({ label, todos, prev, next, onMove, onEdit, onDelete }) =>
               onMove={onMove}
               onEdit={onEdit}
               onDelete={onDelete}
+              onTodoUpdate={onTodoUpdate}
             />
           ))
         )}

@@ -2,7 +2,7 @@ import React from "react";
 import KanbanColumn  from "./kanbanColumn";
 import { useLanguage } from "../../context/LanguageContext.js";
 
-const KanbanBoard = ({ pending, doing, done, onMove, onEdit, onDelete }) => {
+const KanbanBoard = ({ pending, doing, done, onMove, onEdit, onDelete, onTodoUpdate  }) => {
   const { t } = useLanguage();
 
   const columns = [
@@ -41,6 +41,7 @@ const KanbanBoard = ({ pending, doing, done, onMove, onEdit, onDelete }) => {
           onMove={onMove}
           onEdit={onEdit}
           onDelete={onDelete}
+          onTodoUpdate={onTodoUpdate}
         />
       ))}
     </div>
