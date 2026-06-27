@@ -104,5 +104,15 @@
     "descriptionLabel": "Description",
     "cancel": "Cancel",
     "save": "Save changes"
+  },
+  "calendar": {
+    "addEvent":"Add to calendar",
+    "editEvent":"Edit calendar event",
+    "start":"start date & time",
+    "end":"end date & time",
+    "endBeforeStart":"end time must be after start time",
+    "save":"Save changes",
+    "add":"Add event",
+    "error": "Failed to sync with google calendar"
   }
 }

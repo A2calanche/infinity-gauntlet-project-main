@@ -105,5 +105,15 @@
     "cancel": "Cancelar",
     "save": "Salvar cambios"
 
+  },
+   "calendar": {
+    "addEvent":"Adicionar ao Calendario",
+    "editEvent":"Editar evento",
+    "start":"Hora e data de inico",
+    "end":"Hora e data final",
+    "endBeforeStart":"data final deve ser maior a data do inicio",
+    "save":"Salvar cambios",
+    "add":"Adicionar evento",
+    "error": "Falha ao sincronizar com o google calendar"
   }
 }

@@ -102,5 +102,15 @@
     "descriptionLabel": "Descripción",
     "cancel": "Cancelar",
     "save": "Guardar cambios"
+  },
+   "calendar": {
+    "addEvent":"Añadir a calendario",
+    "editEvent":"Editar evento en calendario",
+    "start":"Fecha y hora de inicio",
+    "end":"Fecha y hora de final",
+    "endBeforeStart":"Fecha de termino debe ser despues de fecha de inico",
+    "save":"guardar cambios",
+    "add":"Añadir evento",
+    "error": "Error al sincronizar con google calendar"
   }
 }
