@@ -106,6 +106,7 @@
    "calendar": {
     "addEvent":"Añadir a calendario",
     "editEvent":"Editar evento en calendario",
+    "removeEvent":"Eliminar del calendario",
     "start":"Fecha y hora de inicio",
     "end":"Fecha y hora de final",
     "endBeforeStart":"Fecha de termino debe ser despues de fecha de inico",

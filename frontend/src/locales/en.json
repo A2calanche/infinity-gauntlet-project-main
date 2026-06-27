@@ -108,6 +108,7 @@
   "calendar": {
     "addEvent":"Add to calendar",
     "editEvent":"Edit calendar event",
+    "removeEvent":"Rremove from calendar",
     "start":"start date & time",
     "end":"end date & time",
     "endBeforeStart":"end time must be after start time",
