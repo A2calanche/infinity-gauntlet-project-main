@@ -93,7 +93,7 @@ export const getCalendaraAuthUrl = async () => {
 //POST calendar event
 export const createCalendarEvent = async (todoId, startDateTime, endDateTime) => {
   try {
-    const res = await fetch (`${API_URL}/v1/calendar/event`, {
+    const res = await fetch (`${API_URL}/v1/calendar/event/${todoId}`, {
       method: 'POST',
       headers: getHeaders(),
       body: JSON.stringify({todoId, startDateTime, endDateTime}),
@@ -106,7 +106,7 @@ export const createCalendarEvent = async (todoId, startDateTime, endDateTime) =>
 //PATCH calendar event
 export const updateCalendarEvent = async (todoId, startDateTime, endDateTime) => {
   try{
-    const res = await fetch(`${API_URL}/v1/calendar/event${todoId}`, {
+    const res = await fetch(`${API_URL}/v1/calendar/event/${todoId}`, {
       method: 'PATCH',
       headers: getHeaders(),
       body: JSON.stringify({startDateTime, endDateTime}),
