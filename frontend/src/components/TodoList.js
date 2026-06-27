@@ -18,7 +18,7 @@ const TodoList = ({ onLogout }) => {
     }
   });
 }, []);
-//Añadir elementos al To Do List
+
   const addTodo = async (todo) => {
     const saved = await createTodo(todo);
     const newTodo = { ...todo, id: saved.id };
@@ -26,7 +26,7 @@ const TodoList = ({ onLogout }) => {
     setShowModal(false);
   };
 
-  //Actualizar elementos del To Do List
+ 
   const updateTodo = async (id, updated) => {
     await actualizar(id, updated);
     setTodos((prev) => prev.map((t) => t.id === id ? { ...t, ...updated } : t));
@@ -38,7 +38,7 @@ const TodoList = ({ onLogout }) => {
     setTodos((prev) => prev.map((t) => t.id === id ? { ...t, status: newStatus } : t));
   };
 
-  //Eliminar elementos del To Do List
+
   const removeTodo = async (id) => {
     await eliminar(id);
     setTodos((prev) => prev.filter((t) => t.id !== id));
@@ -47,6 +47,10 @@ const TodoList = ({ onLogout }) => {
   const pending = todos.filter((t) => t.status === "pending");
   const doing   = todos.filter((t) => t.status === "doing");
   const done    = todos.filter((t) => t.status === "done");
+
+  const updateTodoLocal = (id, changes) => {
+  setTodos((prev) => prev.map((t) => t.id === id ? { ...t, ...changes } : t));
+};
 
   return (
     <div className="kanban-wrapper">
@@ -69,6 +73,7 @@ const TodoList = ({ onLogout }) => {
         onMove={moveStatus}
         onEdit={(todo) => setEditTodo(todo)}
         onDelete={removeTodo}
+        onTodoUpdate={updateTodoLocal}
       />
 
       {(showModal || editTodo) && (
