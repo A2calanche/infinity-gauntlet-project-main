@@ -75,14 +75,16 @@ CalendarRouter.post("/event/:todoId", authMiddleware, async (req, res) => {
     });
 
     const calendar = google.calendar({ version: "v3", auth: oauth2Client });
+    const start = new Date(startDateTime).toISOString;
+    const end = new Date(endDateTime).toISOString;
 
     const event = await calendar.events.insert({
       calendarId: "primary",
       requestBody: {
         summary:     todo.title,
         description: todo.description,
-        start: { dateTime: startDateTime, timeZone: "America/Manaus" },
-        end:   { dateTime: endDateTime,   timeZone: "America/Manaus" },
+        start: { dateTime: start , timeZone: "America/Manaus" },
+        end:   { dateTime: end ,   timeZone: "America/Manaus" },
       },
     });
 
@@ -97,7 +99,7 @@ CalendarRouter.post("/event/:todoId", authMiddleware, async (req, res) => {
   }
 });
 //PATCH /v1/calendar/event/:todoId - actualiza el evento en Google Calendar
-calerndarRouter.patch("/event/:todoId", authMiddleware, async (req, res) => {
+CalendarRouter.patch("/event/:todoId", authMiddleware, async (req, res) => {
   try{
   const { todoId } = req.params;
   const { startDateTime, endDateTime } = req.body;
@@ -154,7 +156,7 @@ calerndarRouter.patch("/event/:todoId", authMiddleware, async (req, res) => {
 
 
 //DELETE v1/calendar/event/:todoId - elimina el evento de google calendar
-calendarRouter.delete("/event/:todoId", authMiddleware, async (req, res) => {
+CalendarRouter.delete("/event/:todoId", authMiddleware, async (req, res) => {
   try{
     const { todoId } = req.params;
     const user = await User.findbyId(req.user.id);
