@@ -410,7 +410,58 @@ h1 {
   &--edit:hover { color: var(--info-a0); }
   &--delete:hover { color: var(--danger-a0); }
 }
+// ===========================
+//CALENDAR CARD ACTIONS
+// ===========================
+.kanban-card__calendar{
+  margin-top: 10px;
+  border-top: 1px solid var(--surface-a20);
+  padding-top: 10px;
+}
 
+.kanban-card__calendar-btn{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: transparent;
+  border: 1px solid var(--primary-a0);
+  border-radius: 6px;
+  color: var(--primary-a10);
+  padding: 4px 10px;
+  cursor: pointer;
+  width: 100%;
+  justify-content: center;
+
+  &:hover{
+    background: var(--primary-a0);
+    color: #fff;
+  }
+  &--synced {
+    border-color: var(--success-a0);
+    color: var(--success-a0);
+    flex: 1;
+    &:hover {
+      background: var(--success-a0);
+      color: #000;
+    }
+  }
+  &--remove{
+    border-color: var(--danger-a0);
+    color: var(--danger-a0);
+    width: auto;
+    padding: 4px 8px;
+    
+    &:hover{
+      background: var(--danger-a0);
+      color: #fff;
+    }
+  }
+}
+.kanban-card__calendar-synced{
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
 // ===========================
 // MODAL
 // ===========================
