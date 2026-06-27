@@ -3,9 +3,14 @@ import { RiCloseCircleLine } from "react-icons/ri";
 import { TiEdit } from "react-icons/ti";
 import { useLanguage } from "../../context/LanguageContext.js";
 import TodoDetailModal from "./todoDetailModal.js";
-import { mdCalendarToday, mdCalendarMont } from "react-icons/md";
-import { CalendarEventModal } from "./calendarEventModal.js";
-import { getCalendarStatus, getCalendarStatus, createCalendarEvent, updateCalendarEvent, deleteCalendarEvent, getCalendaraAuthUrl } from "../../services/conection.js";
+import { MdCalendarToday, MdCalendarMonth } from "react-icons/md";
+import CalendarEventModal  from "./calendarEventModal.js";
+import { 
+    getCalendarStatus,
+    createCalendarEvent,
+    updateCalendarEvent,
+    deleteCalendarEvent,
+    getCalendaraAuthUrl } from "../../services/conection.js";
 
 
 
@@ -46,14 +51,14 @@ const KanbanCard = ({ todo, prev, next, onMove, onEdit, onDelete, onTodoUpdate }
       if (!todo.calendarSynced) {
         return (
           <button className="kanban-card__calendar-btn" onClick={handleCalendarClick}>
-            <mdCalendarToday size={14} /> {t("calendar.addEvent")}
+            <MdCalendarToday size={14} /> {t("calendar.addEvent")}
           </button>
         );
       }
       return (
         <div className="kanban-card__calendar-synced">
           <button className="kanban-card__calendar-btn kanban-card__calendar-btn--synced" onClick={handleCalendarClick} >
-            <mdCalendarMont size={14} /> {t("calendar.editEvent")}
+            <MdCalendarMonth size={14} /> {t("calendar.editEvent")}
           </button>
           <button className="kanban-card__calendar-btn kanban-card__calendar-btn--remove" onClick={handleCalendarDelete} >
             🗑️
