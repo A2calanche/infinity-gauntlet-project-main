@@ -1,4 +1,4 @@
-import react , { useState } from "react";
+import { useState } from "react";
 import { useLanguage } from "../../context/LanguageContext.js";
 
 const CalendarEventModal = ({ todo, mode, onClose, onSubmit }) => {
@@ -13,7 +13,7 @@ const CalendarEventModal = ({ todo, mode, onClose, onSubmit }) => {
     const [startDateTime, setStartDateTime] = useState(
         todo.calendarStart ? toLocalISO(new Date(todo.calendarStart)): toLocalISO(now)
     );
-    const [endtDateTime, setEndDateTime] = useState(
+    const [endDateTime, setEndDateTime] = useState(
         todo.calendarEnd ? toLocalISO(new Date(todo.calendarEnd)): toLocalISO(oneHourLater)
     );
     const [loading, setLoading] = useState(false);
@@ -47,18 +47,18 @@ return (
             </h2>
             <button className="modal-card__close" onClick={onClose}>X</button>
         </div>
-        <p className="todo-detail__description">t{todo.title}</p>
+        <p className="todo-detail__description">{t("todo.title")}</p>
         <form className="modal-card__form" onSubmit={handleSubmit}>
             <label>{t("calendar.start")}</label>
             <input className="auth-input"
-            type="dateTime-local"
+            type="datetime-local"
             value={startDateTime}
             onChange={(e) => setStartDateTime(e.target.value)}
             disabled={loading}
             />
             <label>{t("calendar.end")}</label>
             <input className="auth-input"
-            type="dateTime-local"
+            type="datetime-local"
             value={endDateTime}
             onChange={(e) => setEndDateTime(e.target.value)}
             disabled={loading}
