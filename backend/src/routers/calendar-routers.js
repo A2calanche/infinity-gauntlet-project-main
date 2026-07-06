@@ -75,8 +75,11 @@ CalendarRouter.post("/event/:todoId", authMiddleware, async (req, res) => {
     });
 
     const calendar = google.calendar({ version: "v3", auth: oauth2Client });
-    const start = new Date(startDateTime).toISOString;
-    const end = new Date(endDateTime).toISOString;
+    const start = new Date(startDateTime).toISOString();
+    const end = new Date(endDateTime).toISOString();
+    if(isNaN(new Date(startDateTime))|| isNaN(new Date(endDateTime))) {
+        return res.status(400).json({ message: "Invalid date format" });
+}
 
     const event = await calendar.events.insert({
       calendarId: "primary",
@@ -104,7 +107,7 @@ CalendarRouter.patch("/event/:todoId", authMiddleware, async (req, res) => {
   const { todoId } = req.params;
   const { startDateTime, endDateTime } = req.body;
 
-  const user = await User.findbyId(req.user.id);
+  const user = await User.findById(req.user.id);
   if (!user.googleAccessToken) {
     return res.status(403).json({
       message: "google calendar not connected"
@@ -159,7 +162,7 @@ CalendarRouter.patch("/event/:todoId", authMiddleware, async (req, res) => {
 CalendarRouter.delete("/event/:todoId", authMiddleware, async (req, res) => {
   try{
     const { todoId } = req.params;
-    const user = await User.findbyId(req.user.id);
+    const user = await User.findById(req.user.id);
     if (!user.googleAccessToken) {
     return res.status(403).json({
       message: "google calendar not connected"
@@ -180,31 +183,30 @@ CalendarRouter.delete("/event/:todoId", authMiddleware, async (req, res) => {
       access_token: user.googleAccessToken,
       refresh_token: user.googleRefreshToken
     });
-    oauth2Client.on("tokens", async (tokens) =>{
-      if(!token.access_token) {
+    oauth2Client.on("tokens", async (tokens) => {
+      if (tokens.access_token) {
         await User.findByIdAndUpdate(req.user.id, {
-          googleAccessToken: tokens.access_token
+          googleAccessToken: tokens.access_token,
         });
       }
     });
-    const calendar = google.calendar ({
-      version: "v3",
-      auth: oauth2Client
-    });
-    await calendar.event.delete({
+
+    const calendar = google.calendar({ version: "v3", auth: oauth2Client });
+
+    await calendar.events.delete({
       calendarId: "primary",
       eventId: todo.calendarEventId,
     });
+
     todo.calendarEventId = null;
-    todo.calendarSynced = false;
+    todo.calendarSynced  = false;
     await todo.save();
 
-    res.json({
-      message: "Event deleted sucessfully"
-    });
-  } catch (error){
+    res.json({ message: "Event deleted successfully" });
+
+  } catch (error) {
     console.error(error);
-    res.status(500).json({message: "Failed to delete Todo", error: error.message})
+    res.status(500).json({ message: "Failed to delete calendar event", error: error.message });
   }
 });
 
