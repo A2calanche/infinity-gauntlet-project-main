@@ -30,9 +30,9 @@ function App() {
       value={language}
       onChange={(e) => setLanguage(e.target.value)}
     >
-      <option value="en">🇺🇸 EN</option>
-      <option value="es">🇲🇽 ES</option>
-      <option value="pt">🇧🇷 PT</option>
+      <option value="en">🇺🇸</option>
+      <option value="es">🇲🇽</option>
+      <option value="pt">🇧🇷</option>
     </select>
   );
 };
@@ -40,10 +40,7 @@ function App() {
 
   const ThemeToggle = () => (
     <button className="theme-toggle" onClick={toggleTheme}>
-      {isDark
-        ? <><span role="img" aria-label="sun">☀️</span></>
-        : <><span role="img" aria-label="moon">🌙</span></>
-      }
+      {isDark? "☀️ ": "🌙" }
     </button>
   );
 

@@ -93,8 +93,6 @@ body {
   top: 16px;
   right: 16px;
 
-  z-index: 9999;
-
   background: var(--toggle-bg);
   color: var(--text-primary);
 
@@ -107,7 +105,7 @@ body {
   cursor: pointer;
   font-size: 18px;
 
-  display: flex;
+  display: fixed;
   align-items: center;
   justify-content: center;
   gap: 6px;
@@ -119,9 +117,7 @@ body {
 .language-selector {
   position: fixed;
   top: 16px;
-  right: 170px;
-
-  z-index: 9999;
+  right: 70px;
 
   background: var(--toggle-bg);
   color: var(--text-primary);
@@ -137,7 +133,7 @@ body {
 
   font-size: 18px;
 
-  display: flex;
+  display: fixed;
   align-items: center;
 }
 
@@ -672,7 +668,7 @@ h1 {
   }
   .language-selector {
     top: 10px;
-    right: 145px;
+    right: 70px;
     height: 36px;
     padding: 5px 10px;
     font-size: 16px;
@@ -725,7 +721,7 @@ h1 {
 
   .language-selector {
     top: 8px;
-    right: 125px;
+    right: 70px;
     height: 34px;
     padding: 4px 8px;
     font-size: 14px;
@@ -752,35 +748,77 @@ h1 {
   .todo-input {
     width: 55%;
   }
-}// ===========================
-// LANDING PAGE
+
+}
+// ===========================
+// LANDING PAGE 
 // ===========================
 .landing {
-  max-width: 1100px;
+  max-width: 1080px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 24px;
   color: var(--text-primary);
 }
 
+// NAV
+.landing-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 0;
+}
+
+.landing-logo {
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+}
+
+.landing-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.landing-nav-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.9rem;
+
+  &:hover {
+    color: var(--text-primary);
+  }
+}
+
+// HERO
 .landing-hero {
   text-align: center;
-  padding: 100px 20px 60px;
+  padding: 80px 20px 56px;
+}
+
+.landing-eyebrow {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--primary-a10);
+  margin-bottom: 18px;
 }
 
 .landing-title {
-  font-size: 3.5rem;
-  font-weight: bold;
-  margin-bottom: 16px;
-  background: linear-gradient(90deg, var(--primary-a0) 0%, var(--primary-a30) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 18px;
+  color: var(--text-primary);
 }
 
 .landing-subtitle {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: var(--text-secondary);
-  max-width: 600px;
+  max-width: 560px;
   margin: 0 auto 32px;
   line-height: 1.6;
 }
@@ -788,34 +826,52 @@ h1 {
 .landing-cta {
   display: flex;
   justify-content: center;
-  gap: 16px;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
 .landing-button-primary {
   display: inline-block;
   text-decoration: none;
-  padding: 14px 32px;
-  font-size: 1rem;
+  padding: 13px 28px;
+  font-size: 0.95rem;
+  border-radius: 8px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--primary-a0);
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.88;
+  }
+}
+
+.landing-button-sm {
+  padding: 9px 18px;
+  font-size: 0.85rem;
 }
 
 .landing-button-secondary {
   display: inline-flex;
   align-items: center;
   text-decoration: none;
-  padding: 14px 32px;
-  border-radius: 4px;
-  border: 2px solid var(--primary-a0);
+  padding: 13px 28px;
+  border-radius: 8px;
+  border: 1px solid var(--surface-a30);
   color: var(--text-primary);
-  font-weight: bold;
-  transition: background-color 0.2s ease;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
 
   &:hover {
+    border-color: var(--primary-a0);
     background: var(--surface-tonal-a10);
   }
 }
 
-// PREVIEW CARD
+// PREVIEW — mini kanban mockup (signature element)
 .landing-preview {
   display: flex;
   justify-content: center;
@@ -824,111 +880,157 @@ h1 {
 
 .landing-preview-card {
   width: 100%;
-  max-width: 480px;
+  max-width: 700px;
   background: var(--card-bg);
-  border-radius: 20px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+  border: 1px solid var(--surface-a20);
   overflow: hidden;
 }
 
 .landing-preview-header {
   display: flex;
-  gap: 8px;
-  padding: 14px 18px;
-  background: var(--surface-tonal-a10);
+  align-items: center;
+  gap: 6px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--surface-a20);
 }
 
 .landing-dot {
-  width: 12px;
-  height: 12px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
+  background: var(--surface-a30);
   display: inline-block;
 }
 
-.landing-preview-body {
-  padding: 24px;
+.landing-preview-header-title {
+  margin-left: 8px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.landing-preview-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  padding: 18px;
   text-align: left;
+}
 
-  h3 {
-    margin-bottom: 16px;
-    text-align: center;
+.landing-preview-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.landing-preview-col-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.landing-preview-card-item {
+  background: var(--surface-tonal-a0);
+  border: 1px solid var(--surface-a20);
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+
+  &--done {
+    opacity: 0.6;
   }
-}
-
-.landing-preview-row {
-  padding: 14px;
-  border-radius: 5px;
-  color: #fff;
-  margin-bottom: 8px;
-  font-size: 0.95rem;
-}
-
-.landing-preview-done {
-  opacity: 0.7;
 }
 
 // FEATURES
 .landing-section-title {
   text-align: center;
-  font-size: 2rem;
-  margin-bottom: 40px;
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 36px;
 }
 
 .landing-features {
-  padding: 40px 0 80px;
+  padding: 24px 0 80px;
 }
 
 .landing-features-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 24px;
+  gap: 20px;
 }
 
 .landing-feature-card {
   background: var(--card-bg);
-  border-radius: 16px;
-  padding: 28px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  border: 1px solid var(--surface-a20);
+  border-radius: 12px;
+  padding: 24px;
+  transition: border-color 0.2s ease;
+
+  &:hover {
+    border-color: var(--primary-a0);
+  }
 
   h3 {
-    margin: 12px 0 8px;
-    font-size: 1.1rem;
+    margin: 14px 0 6px;
+    font-size: 1rem;
+    font-weight: 600;
   }
 
   p {
     color: var(--text-secondary);
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     line-height: 1.5;
   }
 }
 
 .landing-feature-icon {
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 
 // FOOTER CTA
 .landing-footer-cta {
   text-align: center;
-  padding: 60px 20px 100px;
-  background: var(--surface-tonal-a10);
-  border-radius: 24px;
-  margin-bottom: 60px;
+  padding: 64px 20px;
+  border-top: 1px solid var(--surface-a20);
+  margin-bottom: 40px;
 
   h2 {
     margin-bottom: 24px;
-    font-size: 1.8rem;
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
   }
 }
+
 // ===========================
-// RESPONSIVE
+// LANDING RESPONSIVE
 // ===========================
+
+@media (max-width: 1200px) {
+  .landing-nav-actions {
+    margin-right: 200px;
+  }
+}
+
 @media (max-width: 768px) {
+  .landing-nav-link {
+    display: none;
+  }
+
+  .landing-nav-actions {
+    margin-right: 130px;
+  }
+
   .landing-title {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
   }
 
   .landing-hero {
-    padding: 60px 20px 40px;
+    padding: 48px 20px 36px;
   }
 
   .landing-cta {
@@ -943,11 +1045,14 @@ h1 {
     text-align: center;
     justify-content: center;
   }
+
+  .landing-preview-board {
+    grid-template-columns: 1fr;
+  }
 }.language-selector {
   position: fixed;
-  top: 16px;
-  right: 130px;
-  z-index: 9999;
+  top: 18px;
+  right: 75px;
   background: var(--toggle-bg);
   border: 1px solid var(--primary-a0);
   border-radius: 20px;
@@ -959,9 +1064,15 @@ h1 {
 
 @media (max-width: 480px) {
   .language-selector {
-    top: 8px;
-    right: 100px;
+    top: 24px;
+    right: 75px;
     font-size: 12px;
+    padding: 4px 8px;
+  }
+  .theme-toggle {
+    top: 24px;
+    right: 16px;
+    font-size: 14px;
     padding: 4px 8px;
   }
 }
