@@ -112,8 +112,8 @@ const RecoveryPassword = () => {
               { rule: /[@#$%.+\-*/!]/.test(password),                                    label: t('signin.passwordRules.special') },
               { rule: !/012|123|234|345|456|567|678|789|890/.test(password),             label: t('signin.passwordRules.noSequential') },
               { rule: !/000|111|222|333|444|555|666|777|888|999/.test(password),         label: t('signin.passwordRules.noRepeated') },
-            ].map((item, i) => (
-              <p key={i} style={{
+            ].map((item) => (
+              <p key={item.label} style={{
                 fontSize: '12px',
                 color: item.rule ? '#28c840' : '#ff5f57',
                 margin: '3px 0',
