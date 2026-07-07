@@ -4,7 +4,7 @@ import { llamarLista, createTodo, actualizar, eliminar } from "../services/conec
 import KanbanBoard from "./kanban/kanbanBoard";
 import TodoModal from "./kanban/todoModal";
 
-//Crear To Do list
+
 const TodoList = ({ onLogout }) => {
   const { t } = useLanguage();
   const [todos, setTodos]         = useState([]);
@@ -16,8 +16,9 @@ const TodoList = ({ onLogout }) => {
     if (data && data.todos) {
       setTodos(data.todos.map((t) => ({ ...t, id: t._id || t.id })));
     }
+
   });
-}, []);
+}, [t]);
 
   const addTodo = async (todo) => {
     const saved = await createTodo(todo);
@@ -53,6 +54,8 @@ const TodoList = ({ onLogout }) => {
 };
 
   return (
+    <>
+    <title>{t("landing.title")}</title>
     <div className="kanban-wrapper">
       <div className="kanban-header">
         <h1>{t("todo.title")}</h1>
@@ -90,6 +93,7 @@ const TodoList = ({ onLogout }) => {
         />
       )}
     </div>
+    </>
   );
 };
 
