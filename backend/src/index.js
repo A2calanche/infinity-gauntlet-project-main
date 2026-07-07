@@ -2,6 +2,7 @@ import cors from "cors";
 import express from "express";
 import morgan from "morgan";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 import { connectDB } from "./db/index.js";
 import { TodosRouter } from "./routers/to-dos.routers.js";
 import { AuthRouter } from "./routers/auth-routers.js";
@@ -25,6 +26,7 @@ api.use(cors({
 
 api.use(express.json());
 api.use(express.urlencoded({ extended: false }));
+api.use(cookieParser());
 api.use(morgan("dev"));
 
 api.use((req, res, next) => {

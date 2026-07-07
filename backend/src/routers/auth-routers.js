@@ -5,6 +5,23 @@ import { randomBytes, createHash } from "crypto";
 import { sendPasswordResetEmail } from "../utils/mailer.js"
 export const AuthRouter = express.Router();
 
+const setAuthCookie = (response, token) => {
+  response.cookie("auth_token", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });
+};
+
+const clearAuthCookie = (response) => {
+  response.clearCookie("auth_token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+  });
+};
+
 // REGISTER
 AuthRouter.post("/register", async function (request, response) {
   try {
@@ -28,9 +45,10 @@ AuthRouter.post("/register", async function (request, response) {
       { expiresIn: "7d" }
     );
 
+    setAuthCookie(response, token);
+
     response.status(201).send({
       message: "User created successfully",
-      token,
       user: {
         id: user._id,
         name: user.name
@@ -153,9 +171,10 @@ AuthRouter.post("/google", async function (request, response) {
       { expiresIn: "7d" }
     );
 
+    setAuthCookie(response, jwtToken);
+
     response.send({
       message: "Google login successful",
-      token: jwtToken,
       user: {
         id: user._id,
         name: user.name,
@@ -168,6 +187,32 @@ AuthRouter.post("/google", async function (request, response) {
       message: "Google authentication failed",
       error: error.message,
     });
+  }
+});
+
+AuthRouter.post("/logout", (request, response) => {
+  clearAuthCookie(response);
+  response.status(200).send({ message: "Logged out successfully" });
+});
+
+AuthRouter.get("/me", async function (request, response) {
+  try {
+    const token = request.cookies?.auth_token;
+
+    if (!token) {
+      return response.status(401).send({ message: "Not authenticated" });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.id).select("_id name email");
+
+    if (!user) {
+      return response.status(401).send({ message: "Not authenticated" });
+    }
+
+    return response.status(200).send({ user });
+  } catch (error) {
+    return response.status(401).send({ message: "Not authenticated" });
   }
 });
 
@@ -196,9 +241,10 @@ AuthRouter.post("/login", async function (request, response) {
       { expiresIn: "7d" }
     );
 
+    setAuthCookie(response, token);
+
     response.send({
       message: "Login successful",
-      token,
       user: {
         id: user._id,
         name: user.name,
