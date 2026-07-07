@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { useLanguage } from "../../context/LanguageContext.js";
 
+const toLocalISO = (date) => {
+    const offset = date.getTimezoneOffset() * 60000;
+    return new Date(date - offset).toISOString().slice(0, 16);
+};
+
 const CalendarEventModal = ({ todo, mode, onClose, onSubmit }) => {
     const { t } = useLanguage();
     const now = new Date();
     const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
-    
-    const toLocalISO = (date) => {
-        const offset = date.getTimezoneOffset()*60000;
-        return new Date(date - offset).toISOString().slice(0 ,16);
-    };
     const [startDateTime, setStartDateTime] = useState(
         todo.calendarStart ? toLocalISO(new Date(todo.calendarStart)): toLocalISO(now)
     );
