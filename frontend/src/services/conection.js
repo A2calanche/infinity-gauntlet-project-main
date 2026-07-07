@@ -2,7 +2,6 @@
 const API_URL = process.env.REACT_APP_API_URL;
 const getHeaders = () => ({
   "Content-Type": "application/json",
-  Authorization: `Bearer ${localStorage.getItem("token")}`,
 });
 
 //CRUD GENERAL DE LOS TO-DO'S
@@ -11,6 +10,7 @@ export const llamarLista = async () =>{
    try{
     const res = await fetch(`${API_URL}/v1/to-dos`, {
       headers: getHeaders(),
+      credentials: "include",
     });
     console.log(res.status);
     const data = await res.json();
@@ -26,6 +26,7 @@ export const createTodo = async (todo) => {
       const res = await fetch(`${API_URL}/v1/to-dos`, {
         method: 'POST',
         headers: getHeaders(),
+        credentials: "include",
         body: JSON.stringify({
           title: todo.title,
           description: todo.description,
@@ -43,6 +44,7 @@ export const createTodo = async (todo) => {
       const res = await fetch(`${API_URL}/v1/to-dos/${id}`, {
         method: 'PATCH',
         headers: getHeaders(),
+        credentials: "include",
         body: JSON.stringify({
           title: updatedTodo.title,
           description: updatedTodo.description,
@@ -60,6 +62,7 @@ export const createTodo = async (todo) => {
       const res = await fetch(`${API_URL}/v1/to-dos/${id}`,{
         method : 'DELETE',
         headers:getHeaders(),
+        credentials: "include",
       });
       return res.status;
     } catch (error) {
@@ -73,6 +76,7 @@ export const getCalendarStatus = async () => {
   try {
     const res = await fetch(`${API_URL}/v1/calendar/status`, {
       headers: getHeaders(),
+      credentials: "include",
     });
     return await res.json();
   }catch (error) {
@@ -83,7 +87,8 @@ export const getCalendarStatus = async () => {
 export const getCalendaraAuthUrl = async () => {
   try {
     const res = await fetch(`${API_URL}/v1/calendar/auth`, {
-      headers:getHeaders(),    
+      headers:getHeaders(),
+      credentials: "include",
     });
     return await res.json();
   }catch (error){
@@ -96,6 +101,7 @@ export const createCalendarEvent = async (todoId, startDateTime, endDateTime) =>
     const res = await fetch (`${API_URL}/v1/calendar/event/${todoId}`, {
       method: 'POST',
       headers: getHeaders(),
+      credentials: "include",
       body: JSON.stringify({todoId, startDateTime, endDateTime}),
     });
     return await res.json();
@@ -109,6 +115,7 @@ export const updateCalendarEvent = async (todoId, startDateTime, endDateTime) =>
     const res = await fetch(`${API_URL}/v1/calendar/event/${todoId}`, {
       method: 'PATCH',
       headers: getHeaders(),
+      credentials: "include",
       body: JSON.stringify({startDateTime, endDateTime}),
     });
     return await res.json();
@@ -122,6 +129,7 @@ export const deleteCalendarEvent = async (todoId) => {
     const res = await fetch(`${API_URL}/v1/calendar/event/${todoId}`, {
       method: 'DELETE',
       headers: getHeaders(),
+      credentials: "include",
     });
     return res.status;
   } catch (error){

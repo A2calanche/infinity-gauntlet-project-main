@@ -15,6 +15,7 @@ export function useGoogleSignInButton(buttonRef, language, onSuccess, onError) {
       try {
         const res = await fetch(`${process.env.REACT_APP_API_URL}/v1/auth/google`, {
           method: "POST",
+          credentials: "include",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ token: response.credential }),
         });
@@ -23,8 +24,6 @@ export function useGoogleSignInButton(buttonRef, language, onSuccess, onError) {
           onError?.(data.message || "Google login failed");
           return;
         }
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
         onSuccess?.();
       } catch {
         onError?.("Connection error, try again later");
@@ -46,10 +45,13 @@ export function useGoogleSignInButton(buttonRef, language, onSuccess, onError) {
         shape: "rectangular",
         locale: language,
       });
+      
     };
 
     const existingScript = document.getElementById("google-client-script");
     if (existingScript) existingScript.remove();
+  
+
 
     const script = document.createElement("script");
     script.src = `https://accounts.google.com/gsi/client?hl=${language}`;
