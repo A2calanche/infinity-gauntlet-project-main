@@ -63,8 +63,8 @@ const Landing = () => {
       <section className="landing-features">
         <h2 className="landing-section-title">{t("landing.featuresTitle")}</h2>
         <div className="landing-features-grid">
-          {t("landing.features").map((feature, i) => (
-            <div className="landing-feature-card" key={i}>
+          {t("landing.features").map((feature) => (
+            <div className="landing-feature-card" key={feature.title}>
               <div className="landing-feature-icon">{feature.icon}</div>
               <h3>{feature.title}</h3>
               <p>{feature.description}</p>
