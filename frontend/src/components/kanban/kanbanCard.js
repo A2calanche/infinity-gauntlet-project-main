@@ -12,7 +12,42 @@ import {
     deleteCalendarEvent,
     getCalendaraAuthUrl } from "../../services/conection.js";
 
-
+const CalendarActions = ({ todo, onCalendarClick, onCalendarDelete, t }) => {
+  if (todo.status === "done") return null;
+  if (todo.status === "pending") {
+    if (!todo.calendarSynced) {
+      return (
+        <button className="kanban-card__calendar-btn" onClick={onCalendarClick}>
+          <MdCalendarToday size={14} /> {t("calendar.addEvent")}
+        </button>
+      );
+    }
+    return (
+      <div className="kanban-card__calendar-synced">
+        <button className="kanban-card__calendar-btn kanban-card__calendar-btn--synced" onClick={onCalendarClick}>
+          <MdCalendarMonth size={14} /> {t("calendar.editEvent")}
+        </button>
+        <button className="kanban-card__calendar-btn kanban-card__calendar-btn--remove" onClick={onCalendarDelete}>
+          🗑️
+        </button>
+      </div>
+    );
+  }
+  if (todo.status === "doing") {
+    if (!todo.calendarSynced) return null;
+    return (
+      <div className="kanban-card__calendar-synced">
+        <button className="kanban-card__calendar-btn kanban-card__calendar-btn--synced" onClick={onCalendarClick}>
+          <MdCalendarMonth size={14} /> {t("calendar.editEvent")}
+        </button>
+        <button className="kanban-card__calendar-btn kanban-card__calendar-btn--remove" onClick={onCalendarDelete}>
+          🗑️
+        </button>
+      </div>
+    );
+  }
+  return null;
+};
 
 const KanbanCard = ({ todo, prev, next, onMove, onEdit, onDelete, onTodoUpdate }) => {
   const { t } = useLanguage();
@@ -43,42 +78,6 @@ const KanbanCard = ({ todo, prev, next, onMove, onEdit, onDelete, onTodoUpdate }
   const handleCalendarDelete = async () => {
     await deleteCalendarEvent(todo.id);
     onTodoUpdate(todo.id, { calendarSynced: false, CalendarEventId: null });
-  };
-
-  const renderCalendarAction = () => {
-    if (todo.status === "done") return null;
-    if (todo.status === "pending") {
-      if (!todo.calendarSynced) {
-        return (
-          <button className="kanban-card__calendar-btn" onClick={handleCalendarClick}>
-            <MdCalendarToday size={14} /> {t("calendar.addEvent")}
-          </button>
-        );
-      }
-      return (
-        <div className="kanban-card__calendar-synced">
-          <button className="kanban-card__calendar-btn kanban-card__calendar-btn--synced" onClick={handleCalendarClick} >
-            <MdCalendarMonth size={14} /> {t("calendar.editEvent")}
-          </button>
-          <button className="kanban-card__calendar-btn kanban-card__calendar-btn--remove" onClick={handleCalendarDelete} >
-            🗑️
-          </button>
-          </div>
-      );
-    }
-    if (todo.status === "doing") {
-      if (!todo.calendarSynced) return null;
-      return (
-        <div className="kanban-card__calendar-synced">
-          <button className="kanban-card__calendar-btn kanban-card__calendar-btn--synced" onClick={handleCalendarClick} >
-            <mdCalendarMont size={14} /> {t("calendar.editEvent")}
-          </button>
-          <button className="kanban-card__calendar-btn kanban-card__calendar-btn--remove" onClick={handleCalendarDelete} >
-            🗑️
-          </button>
-          </div>
-      );
-    }
   };
 
   return (
@@ -122,7 +121,12 @@ const KanbanCard = ({ todo, prev, next, onMove, onEdit, onDelete, onTodoUpdate }
           )}
         </div>
         <div className="kanban-card__calendar">
-          {renderCalendarAction()}
+          <CalendarActions
+            todo={todo}
+            onCalendarClick={handleCalendarClick}
+            onCalendarDelete={handleCalendarDelete}
+            t={t}
+          />
         </div>
       </div>
 
