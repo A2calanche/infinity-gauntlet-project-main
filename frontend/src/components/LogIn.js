@@ -14,6 +14,7 @@ const LogIn = ({ onLogin }) => {
 
   useGoogleSignInButton(googleButtonRef, language, onLogin, setError);
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -22,6 +23,7 @@ const LogIn = ({ onLogin }) => {
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/v1/auth/login`, {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
@@ -33,8 +35,6 @@ const LogIn = ({ onLogin }) => {
         return;
       }
 
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
       onLogin();
 
     } catch (error) {
@@ -46,6 +46,7 @@ const LogIn = ({ onLogin }) => {
 
  
   return (
+    
   <div className="auth-container">
     <h1 className="auth-title">{t("login.title")}</h1>
 
@@ -98,6 +99,7 @@ const LogIn = ({ onLogin }) => {
       </p>
     </div>  
   </div>
+
 );
 };
 

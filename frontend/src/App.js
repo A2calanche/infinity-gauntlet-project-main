@@ -10,16 +10,44 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { LanguageProvider, useLanguage } from "./context/LanguageContext";
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isDark, setIsDark] = useState(window.matchMedia("(prefers-color-scheme: dark)").matches);
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+  const handleLogout = async () => {
+    try {
+      await fetch(`${process.env.REACT_APP_API_URL}/v1/auth/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch (error) {
+      console.error(error);
+    }
     setIsAuthenticated(false);
   };
 
   useEffect(() => {
+    let isMounted = true;
+
+    const checkAuth = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/v1/auth/me`, {
+          credentials: "include",
+        });
+        if (isMounted) {
+          setIsAuthenticated(response.ok);
+        }
+      } catch (error) {
+        if (isMounted) {
+          setIsAuthenticated(false);
+        }
+      }
+    };
+
+    checkAuth();
     document.documentElement.setAttribute("data-theme", isDark ? "dark" : "light");
+
+    return () => {
+      isMounted = false;
+    };
   }, [isDark]);
 
   const LanguageSelector = () => {
