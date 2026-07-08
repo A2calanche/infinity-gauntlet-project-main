@@ -116,60 +116,61 @@ CalendarRouter.post("/event/:todoId", authMiddleware, async (req, res) => {
 });
 //PATCH /v1/calendar/event/:todoId - actualiza el evento en Google Calendar
 CalendarRouter.patch("/event/:todoId", authMiddleware, async (req, res) => {
-  try{
-  const { todoId } = req.params;
-  const { startDateTime, endDateTime } = req.body;
+  try {
+    const { todoId } = req.params;
+    const { startDateTime, endDateTime } = req.body;
 
-  const user = await User.findById(req.user.id);
-  if (!user.googleAccessToken) {
-    return res.status(403).json({
-      message: "google calendar not connected"
-    });
-  }
-
-   const todo = await Todo.findOne({ _id: todoId, userId: req.user.id });
-    if (!todo) {
-      return res.status(404).json({ 
-        message: "Todo not found" });
+    const user = await User.findById(req.user.id);
+    if (!user.googleAccessToken) {
+      return res.status(403).json({
+        message: "google calendar not connected"
+      });
     }
-    if(!todo.calendarEventId) {
+
+    const todo = await Todo.findOne({ _id: todoId, userId: req.user.id });
+    if (!todo) {
+      return res.status(404).json({ message: "Todo not found" });
+    }
+    if (!todo.calendarEventId) {
       return res.status(400).json({
         message: "No calendar event linked to this todo"
       });
     }
+
     oauth2Client.setCredentials({
       access_token: user.googleAccessToken,
       refresh_token: user.googleRefreshToken
     });
-    oauth2Client.on("tokens", async (tokens) =>{
-      if(!token.access_token) {
+
+    oauth2Client.on("tokens", async (tokens) => {
+      if (tokens.access_token) {           
         await User.findByIdAndUpdate(req.user.id, {
           googleAccessToken: tokens.access_token
         });
       }
     });
-    const calendar = google.calendar ({
+
+    const calendar = google.calendar({
       version: "v3",
       auth: oauth2Client
     });
+
     await calendar.events.patch({
       calendarId: "primary",
       eventId: todo.calendarEventId,
-      requestBody :{
+      requestBody: {
         start: { dateTime: startDateTime, timeZone: "America/Manaus" },
         end:   { dateTime: endDateTime,   timeZone: "America/Manaus" },
       },
     });
 
-    res.json({
-      message: "Event Updated Successfully"
-    });
+    res.json({ message: "Event Updated Successfully" });
+
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: " Failed to update calendar evet", error: error.message });
-  };
+    res.status(500).json({ message: "Failed to update calendar event", error: error.message });
+  }
 });
-
 
 //DELETE v1/calendar/event/:todoId - elimina el evento de google calendar
 CalendarRouter.delete("/event/:todoId", authMiddleware, async (req, res) => {
