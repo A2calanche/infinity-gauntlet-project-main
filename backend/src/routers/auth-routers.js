@@ -5,11 +5,12 @@ import { randomBytes, createHash } from "crypto";
 import { sendPasswordResetEmail } from "../utils/mailer.js"
 export const AuthRouter = express.Router();
 
+
 const setAuthCookie = (response, token) => {
   response.cookie("auth_token", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    secure: true,
+    sameSite: "none",
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 };
@@ -17,8 +18,8 @@ const setAuthCookie = (response, token) => {
 const clearAuthCookie = (response) => {
   response.clearCookie("auth_token", {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    secure: true,
+    sameSite: "none",
   });
 };
 
@@ -140,11 +141,9 @@ AuthRouter.patch("/reset-password/:token", async function (request, response) {
 AuthRouter.post("/google", async function (request, response) {
   try {
     const { token } = request.body;
-
     if (!token) {
       return response.status(400).send({ message: "Missing token" });
     }
-
     const { verifyGoogleToken } = await import("../middlewares/googleOAuth.js");
     const googleUser = await verifyGoogleToken(token);
 
@@ -198,7 +197,6 @@ AuthRouter.post("/logout", (request, response) => {
 AuthRouter.get("/me", async function (request, response) {
   try {
     const token = request.cookies?.auth_token;
-
     if (!token) {
       return response.status(401).send({ message: "Not authenticated" });
     }
@@ -209,7 +207,6 @@ AuthRouter.get("/me", async function (request, response) {
     if (!user) {
       return response.status(401).send({ message: "Not authenticated" });
     }
-
     return response.status(200).send({ user });
   } catch (error) {
     return response.status(401).send({ message: "Not authenticated" });
@@ -224,12 +221,10 @@ AuthRouter.post("/login", async function (request, response) {
     if (!email || !password) {
       return response.status(400).send({ message: "Missing information" });
     }
-
     const user = await User.findOne({ email });
     if (!user) {
       return response.status(401).send({ message: "Invalid credentials" });
     }
-
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
       return response.status(401).send({ message: "Invalid credentials" });
