@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./App.scss";
 import Landing from "./components/Landing";
-import LogIn from "./components/LogIn";
-import SignIn from "./components/SignIn";
+import AuthForm from "./components/AuthForm";
 import TodoList from "./components/TodoList";
 import ForgotPassword from "./components/Recovery";
 import RecoveryPassword from "./components/RecoveryPassword";
@@ -83,20 +82,20 @@ function App() {
           element={isAuthenticated ? (<Navigate to="/app" replace />) : <Landing />}
           />
           <Route
-            path="/login"
-            element={isAuthenticated ? (<Navigate to="/app" replace />) : (
-              <div className="todo-app">
-                <LogIn onLogin={() => setIsAuthenticated(true)} />
-              </div>
+          path="/login"
+          element={isAuthenticated ? (<Navigate to="/app" replace />) : (
+            <div className="todo-app">
+              <AuthForm mode="login" onLogin={() => setIsAuthenticated(true)} />
+            </div>
             )}
           />
           <Route
             path="/signin"
             element={isAuthenticated ? (<Navigate to="/app" replace />) : (
               <div className="todo-app">
-                <SignIn onLogin={() => setIsAuthenticated(true)} />
+                <AuthForm mode="signin" onLogin={() => setIsAuthenticated(true)} />
               </div>
-            )}
+              )}
           />
           <Route
             path="/forgot-password"
@@ -107,7 +106,7 @@ function App() {
             )}
           />
           <Route
-            path="/Reset-password/:token"
+            path="/reset-password/:token"
             element={isAuthenticated ? (<Navigate to="/app" replace />) : (
               <div className="todo-app">
                 <RecoveryPassword />
