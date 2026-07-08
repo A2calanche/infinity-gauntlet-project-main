@@ -12,12 +12,12 @@ dotenv.config();
 
 const api = express();
 const apiPort = process.env.PORT
+const corsOrigins = process.env.CORS_ORIGINS
+  ? process.env.CORS_ORIGINS.split(",").map((o) => o.trim())
+  : [];
 
 api.use(cors({
-  origin: [
-    "http://localhost:3000","http://127.0.0.1:3000",
-    "https://legendary-fiesta-g4qjpw6ggw5j3vj95-3000.app.github.dev"
-   ],
+  origin: corsOrigins,
   methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
@@ -34,9 +34,10 @@ api.use((req, res, next) => {
   next();
 });
 
-api.use("/v1", TodosRouter);
+
 api.use("/v1/auth", AuthRouter);
 api.use("/v1/calendar", CalendarRouter);
+api.use("/v1", TodosRouter);
 
 connectDB().then(() => {
   api.listen(apiPort, () => {
