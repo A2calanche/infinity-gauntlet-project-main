@@ -67,26 +67,22 @@ AuthRouter.post("/register", async function (request, response) {
 AuthRouter.post("/forgot-password", async function (request, response) {
   try {
     const { email } = request.body;
-
     if (!email) {
-      return response.status(400).send(
-        { message: "Missing email" }
-      );
+      return response.status(400).send({ message: "Missing email" });
     }
-    else {
       const user = await User.findOne({ email });
       if (user) {
         const resetToken = randomBytes(32).toString("hex");
         const resetTokenHash = createHash("sha256").update(resetToken).digest("hex");
-      user.resetTokenHash = resetTokenHash;
-      user.resetTokenExpires = Date.now() + 10 * 60 * 1000; // 10 min
-      await user.save();
-      await sendPasswordResetEmail(user.email, resetToken);
+        user.resetTokenHash = resetTokenHash;
+        user.resetTokenExpires = Date.now() + 10 * 60 * 1000; // 10 min
+        await user.save();
+        await sendPasswordResetEmail(user.email, resetToken);
+
         return response.status(200).json({ message: 
           "If that email is registered, a reset link has been sent." 
         });
       }
-    }
   } catch (error) {
     console.error(error);
     response.status(500).send({ message:
