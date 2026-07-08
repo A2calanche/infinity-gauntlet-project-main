@@ -14,11 +14,16 @@ const oauth2Client = new google.auth.OAuth2(
 
 // GET /v1/calendar/auth — genera el link de autorización
 CalendarRouter.get("/auth", authMiddleware, (req, res) => {
+  const state = jwt.sign(
+    { userId: req.user.id },
+    process.env.JWT_SECRET,
+    { expiresIn: "10m" })
+
   const url = oauth2Client.generateAuthUrl({
     access_type: "offline",
     prompt: "consent",
     scope: ["https://www.googleapis.com/auth/calendar.events"],
-    state: req.user.id, // pasamos el userId para recuperarlo en el callback
+    state,
   });
   res.json({ url });
 });
@@ -26,15 +31,23 @@ CalendarRouter.get("/auth", authMiddleware, (req, res) => {
 // GET /v1/calendar/callback — Google redirige aquí con el code
 CalendarRouter.get("/callback", async (req, res) => {
   try {
-    const { code, state: userId } = req.query;
+    const { code, state } = req.query;
+
+    let userId;
+    try {
+      const decoded = jwt.verify(state, process.env.JWT_SECRET);
+      userId = decoded.userId;
+    } catch {
+      return res.redirect(`${process.env.CLIENT_URL}/app?calendarConnected=false`);
+    }
+
     const { tokens } = await oauth2Client.getToken(code);
 
     await User.findByIdAndUpdate(userId, {
-      googleAccessToken:  tokens.access_token,
+      googleAccessToken: tokens.access_token,
       googleRefreshToken: tokens.refresh_token || undefined,
     });
 
-    // redirige al frontend con éxito
     res.redirect(`${process.env.CLIENT_URL}/app?calendarConnected=true`);
   } catch (error) {
     console.error(error);
