@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
 export function authMiddleware(request, response, next) {
   try {
@@ -18,4 +19,7 @@ export function authMiddleware(request, response, next) {
   } catch (error) {
     response.status(401).send({ message: "Invalid or expired token" });
   }
+}
+export function isValidId(id) {
+  return mongoose.Types.ObjectId.isValid(id);
 }

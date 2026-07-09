@@ -29,12 +29,6 @@ api.use(express.urlencoded({ extended: false }));
 api.use(cookieParser());
 api.use(morgan("dev"));
 
-api.use((req, res, next) => {
-  console.log(req.method, req.path);
-  next();
-});
-
-
 api.use("/v1/auth", AuthRouter);
 api.use("/v1/calendar", CalendarRouter);
 api.use("/v1", TodosRouter);

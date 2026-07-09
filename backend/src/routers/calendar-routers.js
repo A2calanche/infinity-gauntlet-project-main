@@ -1,8 +1,10 @@
 import express from "express";
 import { google } from "googleapis";
 import { authMiddleware } from "../middlewares/auth.js";
+import jwt from "jsonwebtoken";
 import { User } from "../models/Users.js";
 import { Todo } from "../models/Todo.js";
+import { encryptToken, decryptToken } from "../utils/encryption.js";
 
 export const CalendarRouter = express.Router();
 
@@ -32,7 +34,6 @@ CalendarRouter.get("/auth", authMiddleware, (req, res) => {
 CalendarRouter.get("/callback", async (req, res) => {
   try {
     const { code, state } = req.query;
-
     let userId;
     try {
       const decoded = jwt.verify(state, process.env.JWT_SECRET);
@@ -44,8 +45,8 @@ CalendarRouter.get("/callback", async (req, res) => {
     const { tokens } = await oauth2Client.getToken(code);
 
     await User.findByIdAndUpdate(userId, {
-      googleAccessToken: tokens.access_token,
-      googleRefreshToken: tokens.refresh_token || undefined,
+      googleAccessToken: encryptToken(tokens.access_token),
+      googleRefreshToken: tokens.refresh_token ? encryptToken(tokens.refresh_token) : undefined,
     });
 
     res.redirect(`${process.env.CLIENT_URL}/app?calendarConnected=true`);
@@ -57,8 +58,12 @@ CalendarRouter.get("/callback", async (req, res) => {
 
 // POST /v1/calendar/event/:todoId — crea el evento en Google Calendar
 CalendarRouter.post("/event/:todoId", authMiddleware, async (req, res) => {
+  const { todoId } = req.params;
+  if(!isValidId(todoId)) {
+    return res.status(400).json({ message: "Invalid todo ID" });
+  }
   try {
-    const { todoId } = req.params;
+    
     const { startDateTime, endDateTime } = req.body;
 
     const user = await User.findById(req.user.id);
@@ -72,8 +77,8 @@ CalendarRouter.post("/event/:todoId", authMiddleware, async (req, res) => {
     }
 
     oauth2Client.setCredentials({
-      access_token:  user.googleAccessToken,
-      refresh_token: user.googleRefreshToken,
+      access_token:  decryptToken(user.googleAccessToken),
+      refresh_token: decryptToken(user.googleRefreshToken),
     });
 
 
@@ -82,7 +87,7 @@ CalendarRouter.post("/event/:todoId", authMiddleware, async (req, res) => {
     oauth2Client.on("tokens", async (tokens) => {
       if (tokens.access_token) {
         await User.findByIdAndUpdate(req.user.id, {
-          googleAccessToken: tokens.access_token,
+          googleAccessToken: encryptToken(tokens.access_token),
         });
       }
     });
@@ -116,8 +121,11 @@ CalendarRouter.post("/event/:todoId", authMiddleware, async (req, res) => {
 });
 //PATCH /v1/calendar/event/:todoId - actualiza el evento en Google Calendar
 CalendarRouter.patch("/event/:todoId", authMiddleware, async (req, res) => {
+  const { todoId } = req.params;
+  if(!isValidId(todoId)) {
+    return res.status(400).json({ message: "Invalid todo ID" });
+  }
   try {
-    const { todoId } = req.params;
     const { startDateTime, endDateTime } = req.body;
 
     const user = await User.findById(req.user.id);
@@ -138,14 +146,14 @@ CalendarRouter.patch("/event/:todoId", authMiddleware, async (req, res) => {
     }
 
     oauth2Client.setCredentials({
-      access_token: user.googleAccessToken,
-      refresh_token: user.googleRefreshToken
+      access_token: decryptToken(user.googleAccessToken),
+      refresh_token: decryptToken(user.googleRefreshToken)
     });
 
     oauth2Client.on("tokens", async (tokens) => {
       if (tokens.access_token) {           
         await User.findByIdAndUpdate(req.user.id, {
-          googleAccessToken: tokens.access_token
+          googleAccessToken: encryptToken(tokens.access_token)
         });
       }
     });
@@ -174,8 +182,11 @@ CalendarRouter.patch("/event/:todoId", authMiddleware, async (req, res) => {
 
 //DELETE v1/calendar/event/:todoId - elimina el evento de google calendar
 CalendarRouter.delete("/event/:todoId", authMiddleware, async (req, res) => {
+  const { todoId } = req.params;
+  if(!isValidId(todoId)) {
+    return res.status(400).json({ message: "Invalid todo ID" });
+  }
   try{
-    const { todoId } = req.params;
     const user = await User.findById(req.user.id);
     if (!user.googleAccessToken) {
     return res.status(403).json({
@@ -194,13 +205,14 @@ CalendarRouter.delete("/event/:todoId", authMiddleware, async (req, res) => {
       });
     }
     oauth2Client.setCredentials({
-      access_token: user.googleAccessToken,
-      refresh_token: user.googleRefreshToken
+      access_token: decryptToken(user.googleAccessToken),
+      refresh_token: decryptToken(user.googleRefreshToken)
     });
     oauth2Client.on("tokens", async (tokens) => {
       if (tokens.access_token) {
         await User.findByIdAndUpdate(req.user.id, {
-          googleAccessToken: tokens.access_token,
+          googleAccessToken: encryptToken(tokens.access_token),
+          googleRefreshToken: encryptToken(tokens.refresh_token),
         });
       }
     });

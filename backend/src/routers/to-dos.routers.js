@@ -1,7 +1,7 @@
 import express from "express";
 import { Todo } from "../models/Todo.js";
 import { validator } from "../middlewares/validator.js";
-import { authMiddleware } from "../middlewares/auth.js";
+import { authMiddleware, isValidId } from "../middlewares/auth.js";
  
 export const TodosRouter = express.Router();
 
@@ -21,7 +21,7 @@ TodosRouter.get("/to-dos", authMiddleware, async function (request, response) {
 });
 
 //POST
-TodosRouter.post("/to-dos", validator, authMiddleware, async function (request, response) {
+TodosRouter.post("/to-dos", authMiddleware, validator,  async function (request, response) {
       try {
 
         const { title, description, status } = request.body;
@@ -45,8 +45,12 @@ TodosRouter.post("/to-dos", validator, authMiddleware, async function (request, 
 
 //UPDATE
 TodosRouter.patch("/to-dos/:id", authMiddleware, async function (request, response) {
+  const { id } = request.params;
+  if (!isValidId(id)) {
+    return response.status(400).send({ message: "Invalid todo ID" });
+  }
   try {
-    const { id } = request.params;
+    
     const todo = await Todo.findOne({_id: id, userId: request.user.id });
     if (!todo) {
       return response.status(404).send({ message: "Todo not found" });
@@ -56,9 +60,9 @@ TodosRouter.patch("/to-dos/:id", authMiddleware, async function (request, respon
     const updatedTodo = await Todo.findByIdAndUpdate(
       id,
       {
-        title: title || todo.title,
-        description: description || todo.description,
-        status: status || todo.status
+        title: title ?? todo.title,
+        description: description ?? todo.description,
+        status: status ?? todo.status
       },
       { returnDocument: 'after'}
     );
@@ -74,10 +78,12 @@ TodosRouter.patch("/to-dos/:id", authMiddleware, async function (request, respon
 
 //DELETE
 TodosRouter.delete("/to-dos/:id", authMiddleware, async function (request, response) {
+   const { id } = request.params;
+  if (!isValidId(id)) {
+    return response.status(400).send({ message: "Invalid todo ID" });
+  }
   try {
-    const { id } = request.params;
-
-    const todo = await Todo.findOne({ _id: id, userId: request.user.id });
+      const todo = await Todo.findOne({ _id: id, userId: request.user.id });
 
     if (!todo) {
       return response.status(404).send({ message: "Todo not found" });
