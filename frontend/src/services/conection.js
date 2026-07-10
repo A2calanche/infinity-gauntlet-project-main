@@ -4,6 +4,58 @@ const getHeaders = () => ({
   "Content-Type": "application/json",
 });
 
+//Login
+export const loginUser = async (email, password) => {
+   console.log("API_URL being used:", API_URL);
+  const res = await fetch(`${process.env.REACT_APP_API_URL}/v1/auth/login`, {
+    method: "POST",
+    credentials: "include",
+    headers: getHeaders(),
+    body: JSON.stringify({ email, password }),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || "Login failed");
+  return data;
+};
+
+//Signin
+export const registerUser = async (name, email, password) => {
+  const res = await fetch(`${process.env.REACT_APP_API_URL}/v1/auth/register`, {
+    method: "POST",
+    credentials: "include",
+    headers: getHeaders(),
+    body: JSON.stringify({ name, email, password }),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || "Registration failed");
+  return data;
+};
+
+//Google login
+export const googleAuthLogin = async (credential) => {
+  const res = await fetch(`${process.env.REACT_APP_API_URL}/v1/auth/google`, {
+    method: "POST",
+    credentials: "include",
+    headers: getHeaders(),
+    body: JSON.stringify({ token: credential }),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || "Google login failed");
+  return data;
+};
+
+export const logoutUser = async () => {
+  await fetch(`${API_URL}/v1/auth/logout`, {
+    method: "POST",
+    credentials: "include",
+  });
+};
+
+export const checkAuth = async () => {
+  const res = await fetch(`${API_URL}/v1/auth/me`, { credentials: "include" });
+  return res.ok;
+};
+
 //CRUD GENERAL DE LOS TO-DO'S
 //GET
 export const llamarLista = async () =>{

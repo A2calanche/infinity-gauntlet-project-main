@@ -1,8 +1,10 @@
 import express from "express";
 import { google } from "googleapis";
 import { authMiddleware } from "../middlewares/auth.js";
+import jwt from "jsonwebtoken";
 import { User } from "../models/Users.js";
 import { Todo } from "../models/Todo.js";
+import { encryptToken, decryptToken } from "../utils/encryption.js";
 
 export const CalendarRouter = express.Router();
 
@@ -14,11 +16,16 @@ const oauth2Client = new google.auth.OAuth2(
 
 // GET /v1/calendar/auth — genera el link de autorización
 CalendarRouter.get("/auth", authMiddleware, (req, res) => {
+  const state = jwt.sign(
+    { userId: req.user.id },
+    process.env.JWT_SECRET,
+    { expiresIn: "10m" })
+
   const url = oauth2Client.generateAuthUrl({
     access_type: "offline",
     prompt: "consent",
     scope: ["https://www.googleapis.com/auth/calendar.events"],
-    state: req.user.id, // pasamos el userId para recuperarlo en el callback
+    state,
   });
   res.json({ url });
 });
@@ -26,15 +33,22 @@ CalendarRouter.get("/auth", authMiddleware, (req, res) => {
 // GET /v1/calendar/callback — Google redirige aquí con el code
 CalendarRouter.get("/callback", async (req, res) => {
   try {
-    const { code, state: userId } = req.query;
+    const { code, state } = req.query;
+    let userId;
+    try {
+      const decoded = jwt.verify(state, process.env.JWT_SECRET);
+      userId = decoded.userId;
+    } catch {
+      return res.redirect(`${process.env.CLIENT_URL}/app?calendarConnected=false`);
+    }
+
     const { tokens } = await oauth2Client.getToken(code);
 
     await User.findByIdAndUpdate(userId, {
-      googleAccessToken:  tokens.access_token,
-      googleRefreshToken: tokens.refresh_token || undefined,
+      googleAccessToken: encryptToken(tokens.access_token),
+      googleRefreshToken: tokens.refresh_token ? encryptToken(tokens.refresh_token) : undefined,
     });
 
-    // redirige al frontend con éxito
     res.redirect(`${process.env.CLIENT_URL}/app?calendarConnected=true`);
   } catch (error) {
     console.error(error);
@@ -44,8 +58,12 @@ CalendarRouter.get("/callback", async (req, res) => {
 
 // POST /v1/calendar/event/:todoId — crea el evento en Google Calendar
 CalendarRouter.post("/event/:todoId", authMiddleware, async (req, res) => {
+  const { todoId } = req.params;
+  if(!isValidId(todoId)) {
+    return res.status(400).json({ message: "Invalid todo ID" });
+  }
   try {
-    const { todoId } = req.params;
+    
     const { startDateTime, endDateTime } = req.body;
 
     const user = await User.findById(req.user.id);
@@ -59,8 +77,8 @@ CalendarRouter.post("/event/:todoId", authMiddleware, async (req, res) => {
     }
 
     oauth2Client.setCredentials({
-      access_token:  user.googleAccessToken,
-      refresh_token: user.googleRefreshToken,
+      access_token:  decryptToken(user.googleAccessToken),
+      refresh_token: decryptToken(user.googleRefreshToken),
     });
 
 
@@ -69,7 +87,7 @@ CalendarRouter.post("/event/:todoId", authMiddleware, async (req, res) => {
     oauth2Client.on("tokens", async (tokens) => {
       if (tokens.access_token) {
         await User.findByIdAndUpdate(req.user.id, {
-          googleAccessToken: tokens.access_token,
+          googleAccessToken: encryptToken(tokens.access_token),
         });
       }
     });
@@ -103,65 +121,72 @@ CalendarRouter.post("/event/:todoId", authMiddleware, async (req, res) => {
 });
 //PATCH /v1/calendar/event/:todoId - actualiza el evento en Google Calendar
 CalendarRouter.patch("/event/:todoId", authMiddleware, async (req, res) => {
-  try{
   const { todoId } = req.params;
-  const { startDateTime, endDateTime } = req.body;
-
-  const user = await User.findById(req.user.id);
-  if (!user.googleAccessToken) {
-    return res.status(403).json({
-      message: "google calendar not connected"
-    });
+  if(!isValidId(todoId)) {
+    return res.status(400).json({ message: "Invalid todo ID" });
   }
+  try {
+    const { startDateTime, endDateTime } = req.body;
 
-   const todo = await Todo.findOne({ _id: todoId, userId: req.user.id });
-    if (!todo) {
-      return res.status(404).json({ 
-        message: "Todo not found" });
+    const user = await User.findById(req.user.id);
+    if (!user.googleAccessToken) {
+      return res.status(403).json({
+        message: "google calendar not connected"
+      });
     }
-    if(!todo.calendarEventId) {
+
+    const todo = await Todo.findOne({ _id: todoId, userId: req.user.id });
+    if (!todo) {
+      return res.status(404).json({ message: "Todo not found" });
+    }
+    if (!todo.calendarEventId) {
       return res.status(400).json({
         message: "No calendar event linked to this todo"
       });
     }
+
     oauth2Client.setCredentials({
-      access_token: user.googleAccessToken,
-      refresh_token: user.googleRefreshToken
+      access_token: decryptToken(user.googleAccessToken),
+      refresh_token: decryptToken(user.googleRefreshToken)
     });
-    oauth2Client.on("tokens", async (tokens) =>{
-      if(!token.access_token) {
+
+    oauth2Client.on("tokens", async (tokens) => {
+      if (tokens.access_token) {           
         await User.findByIdAndUpdate(req.user.id, {
-          googleAccessToken: tokens.access_token
+          googleAccessToken: encryptToken(tokens.access_token)
         });
       }
     });
-    const calendar = google.calendar ({
+
+    const calendar = google.calendar({
       version: "v3",
       auth: oauth2Client
     });
+
     await calendar.events.patch({
       calendarId: "primary",
       eventId: todo.calendarEventId,
-      requestBody :{
+      requestBody: {
         start: { dateTime: startDateTime, timeZone: "America/Manaus" },
         end:   { dateTime: endDateTime,   timeZone: "America/Manaus" },
       },
     });
 
-    res.json({
-      message: "Event Updated Successfully"
-    });
+    res.json({ message: "Event Updated Successfully" });
+
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: " Failed to update calendar evet", error: error.message });
-  };
+    res.status(500).json({ message: "Failed to update calendar event", error: error.message });
+  }
 });
-
 
 //DELETE v1/calendar/event/:todoId - elimina el evento de google calendar
 CalendarRouter.delete("/event/:todoId", authMiddleware, async (req, res) => {
+  const { todoId } = req.params;
+  if(!isValidId(todoId)) {
+    return res.status(400).json({ message: "Invalid todo ID" });
+  }
   try{
-    const { todoId } = req.params;
     const user = await User.findById(req.user.id);
     if (!user.googleAccessToken) {
     return res.status(403).json({
@@ -180,13 +205,14 @@ CalendarRouter.delete("/event/:todoId", authMiddleware, async (req, res) => {
       });
     }
     oauth2Client.setCredentials({
-      access_token: user.googleAccessToken,
-      refresh_token: user.googleRefreshToken
+      access_token: decryptToken(user.googleAccessToken),
+      refresh_token: decryptToken(user.googleRefreshToken)
     });
     oauth2Client.on("tokens", async (tokens) => {
       if (tokens.access_token) {
         await User.findByIdAndUpdate(req.user.id, {
-          googleAccessToken: tokens.access_token,
+          googleAccessToken: encryptToken(tokens.access_token),
+          googleRefreshToken: encryptToken(tokens.refresh_token),
         });
       }
     });
