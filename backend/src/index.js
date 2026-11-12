@@ -23,7 +23,6 @@ api.use(cors({
   credentials: true,
 }));
 
-
 api.use(express.json());
 api.use(express.urlencoded({ extended: false }));
 api.use(cookieParser());
